@@ -1,7 +1,13 @@
+import 'dart:developer';
+
 import 'package:carousel_indicator/carousel_indicator.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+// import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get_instance/get_instance.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/route_manager.dart';
+import 'package:todo_app/getx/onboarding_controler/pageIndex_for_scroll_controler.dart';
 import 'package:todo_app/models/onboading_model.dart';
 import 'package:todo_app/modules/start_screen.dart';
 import 'package:todo_app/utiles/Constants/size.dart';
@@ -19,6 +25,9 @@ class OnBoardingScreen extends StatefulWidget {
 }
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
+  final OnBoadingPageIndexController pageIndexController =
+      Get.put(OnBoadingPageIndexController());
+
   // late CarouselController carouselTextController;
   late CarouselController carouselImageController;
   late PageController textPageControler;
@@ -27,6 +36,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+
     // carouselTextController = CarouselController();
     carouselImageController = CarouselController();
     textPageControler = PageController(initialPage: 0, keepPage: true);
@@ -34,8 +44,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
 
   @override
   Widget build(BuildContext context) {
+    log('Rebuild');
     return Scaffold(
-      backgroundColor: Colors.black,
+      // backgroundColor: Colors.black,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -43,7 +54,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           SizedBox(
             height: 10.h,
           ),
-          carouselSliderImages(),
+          // carouselSliderImages(),
           _carouselIndicator(),
           SizedBox(
             height: 50.h,
@@ -66,11 +77,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     );
   }
 
-  CarouselIndicator _carouselIndicator() {
-    return CarouselIndicator(
-      index: pageIndex,
-      count: OnboadingModel.listOfOnboarding.length,
-    );
+  Obx _carouselIndicator() {
+    return Obx(() {
+      return CarouselIndicator(
+        index: pageIndexController.pageIndex.value,
+        count: OnboadingModel.listOfOnboarding.length,
+      );
+    });
   }
 
   Expanded _buttons(BuildContext context) {
@@ -83,7 +96,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           children: [
             TextButton(
                 onPressed: () {
-                  if (pageIndex != 0) {
+                  if (pageIndexController.pageIndex.value != 0) {
                     // carouselImageController.previousPage();
                     textPageControler.previousPage(
                         duration: const Duration(milliseconds: 600),
@@ -98,13 +111,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               heightOfBtn: 48.h,
               btnName: 'Next',
               onPressed: () {
-                if (pageIndex == OnboadingModel.listOfOnboarding.length - 1) {
-                  HelperFunctions.navigateToScreen(
-                      context: context, screen: const StartScreen());
+                if (pageIndexController.pageIndex.value ==
+                    OnboadingModel.listOfOnboarding.length - 1) {
+                  // Get.to(const StartScreen());
+                  Get.toNamed('/start');
                 }
                 // carouselTextController.nextPage();
                 // carouselImageController.nextPage();
                 //
+
                 textPageControler.nextPage(
                     duration: const Duration(milliseconds: 800),
                     curve: Curves.linear);
@@ -125,7 +140,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         itemCount: OnboadingModel.listOfOnboarding.length,
         controller: textPageControler,
         onPageChanged: (value) {
-          carouselImageController.animateToPage(value);
+          // carouselImageController
+          // setState(() {
+          //   pageIndex = value;
+
+          // });
+
+          pageIndexController.updatePageIndex(value);
         },
         itemBuilder: (context, index) {
           return Column(children: [
@@ -157,8 +178,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       child: TopLeftBtn(
         isText: true,
         onPressed: () {
-          HelperFunctions.navigateToScreen(
-              context: context, screen: const StartScreen());
+          // HelperFunctions.navigateToScreen(
+          //     context: context, screen: const StartScreen());
+          Get.toNamed('/start');
         },
       ),
     );

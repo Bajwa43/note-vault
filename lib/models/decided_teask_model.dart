@@ -23,17 +23,17 @@ class DecidedTaskModel {
         category: 'University'),
     DecidedTaskModel(
         taskTitle: 'Do Computer Work',
-        dateTime: DateTime.now().toString(),
+        dateTime: 'ToDay At ${DateTime.now().hour}:${DateTime.now().minute}',
         priority: 3,
         category: 'Work'),
     DecidedTaskModel(
         taskTitle: 'Do Cloude Computing Work',
-        dateTime: DateTime.now().toString(),
+        dateTime: 'ToDay At ${DateTime.now().hour}:${DateTime.now().minute}',
         priority: 4,
         category: 'Home'),
     DecidedTaskModel(
         taskTitle: 'Do Internet Of things Work',
-        dateTime: DateTime.now().toString(),
+        dateTime: 'ToDay At ${DateTime.now().hour}:${DateTime.now().minute}',
         priority: 5,
         category: 'Work'),
   ];

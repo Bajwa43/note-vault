@@ -33,60 +33,54 @@ class OnScreen extends StatelessWidget {
             prefixIconifTrue: Icon(Icons.search),
           ),
 
-          SingleChildScrollView(
-            physics: ScrollPhysics(),
-            child: Column(
-              children: [
-                // ......> ToDay
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: CombineButtonWidget(
-                    btnText: 'ToDay',
-                    onTap: () {},
-                  ),
+          Column(
+            children: [
+              // ......> ToDay
+              Align(
+                alignment: Alignment.topLeft,
+                child: CombineButtonWidget(
+                  btnText: 'ToDay',
+                  onTap: () {},
                 ),
-                SizedBox(
-                  // height: 160,
-                  child: ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    // itemCount: DecidedTaskModel.listOfDecidedTask.length,
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return TaskCardWidget(
-                        btnColor: Colors.blue,
-                        index: index,
-                        list: DecidedTaskModel.listOfDecidedTask,
-                      );
-                    },
-                  ),
-                ),
+              ),
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                // itemCount: DecidedTaskModel.listOfDecidedTask.length,
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return TaskCardWidget(
+                    btnColor: Colors.blue,
+                    index: index,
+                    list: DecidedTaskModel.listOfDecidedTask,
+                  );
+                },
+              ),
 
-                // ............>Completed
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: CombineButtonWidget(
-                    widthOfBtn: 102.w,
-                    btnText: 'Completed',
-                    onTap: () {},
-                  ),
+              // ............>Completed
+              Align(
+                alignment: Alignment.topLeft,
+                child: CombineButtonWidget(
+                  widthOfBtn: 102.w,
+                  btnText: 'Completed',
+                  onTap: () {},
                 ),
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: CompletedTaskModel.listOFCompletedTask.length,
-                  // itemCount: 2,
-                  itemBuilder: (context, index) {
-                    return TaskCardWidget(
-                      btnHide: true,
-                      // btnColor: Colors.blue,
-                      index: index,
-                      list: CompletedTaskModel.listOFCompletedTask,
-                    );
-                  },
-                ),
-              ],
-            ),
+              ),
+              ListView.builder(
+                physics: NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: CompletedTaskModel.listOFCompletedTask.length,
+                // itemCount: 2,
+                itemBuilder: (context, index) {
+                  return TaskCardWidget(
+                    btnHide: true,
+                    // btnColor: Colors.blue,
+                    index: index,
+                    list: CompletedTaskModel.listOFCompletedTask,
+                  );
+                },
+              ),
+            ],
           ),
 
           // TaskCardWidget(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:todo_app/modules/auth_module/Login/login_screen.dart';
 import 'package:todo_app/modules/auth_module/register/register_screnn.dart';
 import 'package:todo_app/utiles/Constants/colors.dart';
@@ -21,8 +22,9 @@ class StartScreen extends StatelessWidget {
         // crossAxisAlignment: CrossAxisAlignment.end,
         // mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          TopLeftBtn(
-              onPressed: () => HelperFunctions.popBack(context: context)),
+          TopLeftBtn(onPressed: () {
+            Get.back();
+          }),
           _displayheaderText(),
           _descrptionText(),
           const Spacer(),
@@ -66,8 +68,9 @@ class StartScreen extends StatelessWidget {
           heightOfBtn: 48.h,
           btnName: 'Create Account',
           onPressed: () {
-            HelperFunctions.navigateToScreen(
-                context: context, screen: RegisterScreen());
+            // HelperFunctions.navigateToScreen(
+            //     context: context, screen: RegisterScreen());
+            Get.toNamed('/register');
           },
           widthOfBtn: 327.sp,
           flatBtn: true),
@@ -81,8 +84,9 @@ class StartScreen extends StatelessWidget {
             btnName: 'LOGIN',
             heightOfBtn: 48.h,
             onPressed: () {
-              HelperFunctions.navigateToScreen(
-                  context: context, screen: LoginScreen());
+              // HelperFunctions.navigateToScreen(
+              //     context: context, screen: LoginScreen());
+              Get.toNamed('/login');
             },
             widthOfBtn: 327.sp));
   }

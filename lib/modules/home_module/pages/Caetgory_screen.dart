@@ -4,7 +4,6 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 // import 'package:flutter_iconpicker/Models/icon_pack.dart';
 // import 'package:flutter_iconpicker/Models/IconPack.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icon_picker/icon_picker.dart';
 import 'package:todo_app/models/category_model.dart';
 import 'package:todo_app/modules/home_module/pages/components/color_picker_widget.dart';
 import 'package:todo_app/utiles/Constants/colors.dart';
@@ -55,6 +54,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: KColors.backGround,
       body: SafeArea(
         child: Column(children: [
           TextWidget(
@@ -82,16 +82,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
           // iconPiker(context),
 
-          IconPicker(
-            controller: _controller,
-            //initialValue: _initialValue,
-            icon: Icon(Icons.apps),
-            labelText: "Icon",
-            enableSearch: true,
-            onChanged: (val) {},
-            validator: (val) {},
-            onSaved: (val) => setState(() {}),
-          ),
+          // IconPicker(
+          //   controller: _controller,
+          //   //initialValue: _initialValue,
+          //   icon: Icon(Icons.apps),
+          //   labelText: "Icon",
+          //   enableSearch: true,
+          //   onChanged: (val) {},
+          //   validator: (val) {},
+          //   onSaved: (val) => setState(() {}),
+          // ),
 
           TextWidget(
             text: 'Category color:',

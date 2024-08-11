@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1033581757125",
+    "project_id": "note-vault-eefb1",
+    "storage_bucket": "note-vault-eefb1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1033581757125:android:a8a543569a3f7a0ba026ac",
+        "android_client_info": {
+          "package_name": "com.example.todo_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhBb30xSMSKJegLnbT4jdotRwO4H1_14o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

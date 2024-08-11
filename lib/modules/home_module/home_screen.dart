@@ -59,11 +59,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: KColors.backGround,
       body: SafeArea(
-        child: Column(children: [
-          const HomeAppBarWidget(),
-          OnScreen(controller: searchbarControler)
-        ]),
+        child: SingleChildScrollView(
+          child: Column(children: [
+            const HomeAppBarWidget(),
+            OnScreen(controller: searchbarControler)
+          ]),
+        ),
       ),
       bottomNavigationBar:
           HomeBottomNavbarWidget(onPressed: showBottomSheet, index: 0),
