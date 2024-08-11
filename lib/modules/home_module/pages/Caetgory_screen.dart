@@ -154,19 +154,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
     );
   }
 
-  void _openAccentColorPicker() async {
-    _openDialog(
-      "Accent Color picker",
-      MaterialColorPicker(
-        colors: accentColors,
-        selectedColor: _mainColor,
-        onMainColorChange: (color) => setState(() => _tempMainColor = color),
-        circleSize: 40.0,
-        spacing: 10,
-      ),
-    );
-  }
-
   void _openDialog(String title, Widget content) {
     showDialog(
       context: context,

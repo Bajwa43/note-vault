@@ -133,7 +133,7 @@ class ColorPickerWidgetState extends State<ColorPickerWidget> {
               OutlinedButton(
                 onPressed: _openAccentColorPicker,
                 child: const Text('Show accent color picker'),
-              ),
+          ),
               const SizedBox(height: 16.0),
               OutlinedButton(
                 onPressed: _openFullMaterialColorPicker,
