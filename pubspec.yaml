@@ -41,7 +41,6 @@ dependencies:
   google_fonts: 
   floating_bottom_bar:
   omni_datetime_picker:
-  # flutter_iconpicker: ^3.4.4
   flutter_colorpicker: 
   flex_color_picker: 
   flutter_svg: 
@@ -52,6 +51,9 @@ dependencies:
   fl_chart:
   circular_countdown_timer: 
   # flutter_material_color_picker: 
+  auto_size_text:
+  icon_picker: ^2.1.0
+
 
 dev_dependencies:
   flutter_test:

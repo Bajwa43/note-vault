@@ -48,7 +48,8 @@ class MyApp extends StatelessWidget {
             // home: SettingScreen(),
             // home: ProfileScreen(),
             // home: FocusScreen(),
-            home: HomeScreen(),
+            home: CategoryScreen(),
+
             // home: CalendarScreen(),
             // home: const EditTaskScreen(indexOfSelectedTask: 0),
             // home: const LoginScreen(),

@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+// import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 // import 'package:flutter_iconpicker/Models/icon_pack.dart';
 // import 'package:flutter_iconpicker/Models/IconPack.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:icon_picker/icon_picker.dart';
 import 'package:todo_app/models/category_model.dart';
 import 'package:todo_app/modules/home_module/pages/components/color_picker_widget.dart';
 import 'package:todo_app/utiles/Constants/colors.dart';
 import 'package:todo_app/utiles/Constants/size.dart';
 import 'package:todo_app/utiles/helpers/helper_functions.dart';
+import 'package:todo_app/widgets/Buttons/icon_btn.dart';
 import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
 // import 'package:flutter_iconpicker/flutter_iconpicker.dart' as ico;
@@ -24,7 +26,7 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   late TextEditingController categoryControler;
-  IconData? icon;
+  Icon? _icon;
   late Color screenPickerColor;
 
   ColorSwatch? _tempMainColor;
@@ -32,12 +34,15 @@ class _CategoryScreenState extends State<CategoryScreen> {
   ColorSwatch? _mainColor = Colors.blue;
   Color? _shadeColor = Colors.blue[800];
 
+  late TextEditingController _controller;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     categoryControler = TextEditingController();
     screenPickerColor = Colors.blue; // Material blue.
+    _controller = TextEditingController(text: 'home');
   }
 
   @override
@@ -76,6 +81,17 @@ class _CategoryScreenState extends State<CategoryScreen> {
           ),
 
           // iconPiker(context),
+
+          IconPicker(
+            controller: _controller,
+            //initialValue: _initialValue,
+            icon: Icon(Icons.apps),
+            labelText: "Icon",
+            enableSearch: true,
+            onChanged: (val) {},
+            validator: (val) {},
+            onSaved: (val) => setState(() {}),
+          ),
 
           TextWidget(
             text: 'Category color:',
@@ -238,81 +254,10 @@ class _CategoryScreenState extends State<CategoryScreen> {
   //   );
   // }
 
-  Widget color(BuildContext context, Function(Color color) onColorChanged) {
-    return ColorPicker(
-        // colorPickerWidth: 300,
-        pickerColor: screenPickerColor,
-        onColorChanged: onColorChanged);
-  }
-}
-
-class CustomColorPicker extends StatefulWidget {
-  const CustomColorPicker({super.key, required this.colorSelectionCallBack});
-  final Function(Color) colorSelectionCallBack;
-
-  @override
-  State<CustomColorPicker> createState() => _CustomColorPickerState();
-}
-
-class _CustomColorPickerState extends State<CustomColorPicker> {
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        SingleChildScrollView(
-          padding: EdgeInsets.all(5),
-          scrollDirection: Axis.horizontal,
-          child: CustomColor(
-            colorList: accentColors,
-            onColorSelect: (color) {
-              widget.colorSelectionCallBack(color);
-            },
-          ),
-        )
-      ],
-    );
-  }
-}
-
-List<Color> list = [
-  Colors.black,
-  Colors.white,
-  Colors.red,
-  Colors.yellow,
-  Colors.pink
-];
-
-class CustomColor extends StatelessWidget {
-  const CustomColor(
-      {super.key, required this.colorList, required this.onColorSelect});
-  final List<Color> colorList;
-  final Function(Color color) onColorSelect;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        ...List.generate(
-          colorList.length,
-          (index) => Padding(
-            padding: EdgeInsets.all(7.w),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(10),
-              onTap: () {
-                onColorSelect(colorList[index]);
-              },
-              child: Container(
-                height: 36.r,
-                width: 36.r,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: colorList[index],
-                ),
-              ),
-            ),
-          ),
-        )
-      ],
-    );
-  }
+  // Widget color(BuildContext context, Function(Color color) onColorChanged) {
+  //   return ColorPicker(
+  //       // colorPickerWidth: 300,
+  //       pickerColor: screenPickerColor,
+  //       onColorChanged: onColorChanged);
+  // }
 }

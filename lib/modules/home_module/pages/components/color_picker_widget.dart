@@ -1,148 +1,84 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ColorPickerWidget extends StatefulWidget {
-  const ColorPickerWidget({super.key});
+class CustomColorPicker extends StatefulWidget {
+  const CustomColorPicker({super.key, required this.colorSelectionCallBack});
+  final Function(Color) colorSelectionCallBack;
 
   @override
-  ColorPickerWidgetState createState() => ColorPickerWidgetState();
+  State<CustomColorPicker> createState() => _CustomColorPickerState();
 }
 
-class ColorPickerWidgetState extends State<ColorPickerWidget> {
-  // Use temp variable to only update color when press dialog 'submit' button
-  ColorSwatch? _tempMainColor;
-  Color? _tempShadeColor;
-  ColorSwatch? _mainColor = Colors.blue;
-  Color? _shadeColor = Colors.blue[800];
-
-  void _openDialog(String title, Widget content) {
-    showDialog(
-      context: context,
-      builder: (_) {
-        return AlertDialog(
-          contentPadding: const EdgeInsets.all(18.0),
-          title: Text(title),
-          content: content,
-          actions: [
-            TextButton(
-              onPressed: Navigator.of(context).pop,
-              child: const Text('CANCEL'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                setState(() => _mainColor = _tempMainColor);
-                setState(() => _shadeColor = _tempShadeColor);
-              },
-              child: const Text('SUBMIT'),
-            ),
-          ],
-        );
-      },
+class _CustomColorPickerState extends State<CustomColorPicker> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SingleChildScrollView(
+          padding: EdgeInsets.all(5),
+          scrollDirection: Axis.horizontal,
+          child: CustomColor(
+            colorList: accentColors,
+            onColorSelect: (color) {
+              widget.colorSelectionCallBack(color);
+            },
+          ),
+        )
+      ],
     );
   }
+}
 
-  void _openColorPicker() async {
-    _openDialog(
-      "Color picker",
-      MaterialColorPicker(
-        selectedColor: _shadeColor,
-        onColorChange: (color) => setState(() => _tempShadeColor = color),
-        onMainColorChange: (color) => setState(() => _tempMainColor = color),
-        onBack: () => print("Back button pressed"),
-      ),
-    );
-  }
+const List<ColorSwatch> accentColors = <ColorSwatch>[
+  Colors.redAccent,
+  Colors.pinkAccent,
+  Colors.purpleAccent,
+  Colors.deepPurpleAccent,
+  Colors.indigoAccent,
+  Colors.blueAccent,
+  Colors.lightBlueAccent,
+  Colors.cyanAccent,
+  Colors.tealAccent,
+  Colors.greenAccent,
+  Colors.lightGreenAccent,
+  Colors.limeAccent,
+  Colors.yellowAccent,
+  Colors.amberAccent,
+  Colors.orangeAccent,
+  Colors.deepOrangeAccent,
+];
 
-  void _openMainColorPicker() async {
-    _openDialog(
-      "Main Color picker",
-      MaterialColorPicker(
-        selectedColor: _mainColor,
-        allowShades: false,
-        onMainColorChange: (color) => setState(() => _tempMainColor = color),
-      ),
-    );
-  }
-
-  void _openAccentColorPicker() async {
-    _openDialog(
-      "Accent Color picker",
-      MaterialColorPicker(
-        colors: accentColors,
-        selectedColor: _mainColor,
-        onMainColorChange: (color) => setState(() => _tempMainColor = color),
-        circleSize: 40.0,
-        spacing: 10,
-      ),
-    );
-  }
-
-  void _openFullMaterialColorPicker() async {
-    _openDialog(
-      "Full Material Color picker",
-      MaterialColorPicker(
-        colors: fullMaterialColors,
-        selectedColor: _mainColor,
-        onMainColorChange: (color) => setState(() => _tempMainColor = color),
-      ),
-    );
-  }
+class CustomColor extends StatelessWidget {
+  const CustomColor(
+      {super.key, required this.colorList, required this.onColorSelect});
+  final List<Color> colorList;
+  final Function(Color color) onColorSelect;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Material color picker",
-                style: Theme.of(context).textTheme.headlineSmall,
+    return Row(
+      children: [
+        ...List.generate(
+          colorList.length,
+          (index) => Padding(
+            padding: EdgeInsets.all(7.w),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(10),
+              onTap: () {
+                onColorSelect(colorList[index]);
+              },
+              child: Container(
+                height: 36.r,
+                width: 36.r,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: colorList[index],
+                ),
               ),
-              const SizedBox(height: 62.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    backgroundColor: _mainColor,
-                    radius: 35.0,
-                    child: const Text("MAIN"),
-                  ),
-                  const SizedBox(width: 16.0),
-                  CircleAvatar(
-                    backgroundColor: _shadeColor,
-                    radius: 35.0,
-                    child: const Text("SHADE"),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 32.0),
-              OutlinedButton(
-                onPressed: _openColorPicker,
-                child: const Text('Show color picker'),
-              ),
-              const SizedBox(height: 16.0),
-              OutlinedButton(
-                onPressed: _openMainColorPicker,
-                child: const Text('Show main color picker'),
-              ),
-              const Text('(only main color)'),
-              const SizedBox(height: 16.0),
-              OutlinedButton(
-                onPressed: _openAccentColorPicker,
-                child: const Text('Show accent color picker'),
+            ),
           ),
-              const SizedBox(height: 16.0),
-              OutlinedButton(
-                onPressed: _openFullMaterialColorPicker,
-                child: const Text('Show full material color picker'),
-              ),
-            ],
-          ),
-        ),
-      ),
+        )
+      ],
     );
   }
 }

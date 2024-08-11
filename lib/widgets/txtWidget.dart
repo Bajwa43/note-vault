@@ -1,4 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextWidget extends StatelessWidget {
   const TextWidget(
@@ -22,7 +24,11 @@ class TextWidget extends StatelessWidget {
       alignment: alignmentGeometry,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: padHori, vertical: padVerti),
-        child: Text(text, style: textStyle, textAlign: textAlign),
+        child: SizedBox(
+          // width: 140.w,
+          child: AutoSizeText(text,
+              maxLines: 2, style: textStyle, textAlign: textAlign),
+        ),
       ),
     );
   }
