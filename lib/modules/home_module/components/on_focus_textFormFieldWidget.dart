@@ -11,13 +11,15 @@ class OnFocusTextFormFieldWidget extends StatelessWidget {
       this.autoFocus = false,
       required this.hintText,
       this.hintTextStyle,
-      required this.controller});
+      required this.controller,
+      this.validation});
 
   // final Function() taskOnTap;
   final bool autoFocus;
   final String hintText;
   final TextStyle? hintTextStyle;
   final TextEditingController controller;
+  final String? Function(String?)? validation;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +28,7 @@ class OnFocusTextFormFieldWidget extends StatelessWidget {
         Padding(
           padding: EdgeInsets.symmetric(vertical: 5.w),
           child: TextFormField(
+            validator: validation,
             controller: controller,
             autofocus: autoFocus,
             decoration: InputDecoration(

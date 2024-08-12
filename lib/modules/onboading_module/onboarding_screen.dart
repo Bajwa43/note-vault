@@ -7,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_instance/get_instance.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:get/route_manager.dart';
-import 'package:todo_app/getx/onboarding_controler/pageIndex_for_scroll_controler.dart';
+import 'package:todo_app/modules/onboading_module/controller/pageIndex_for_scroll_controler.dart';
 import 'package:todo_app/models/onboading_model.dart';
 import 'package:todo_app/modules/start_screen.dart';
 import 'package:todo_app/utiles/Constants/size.dart';

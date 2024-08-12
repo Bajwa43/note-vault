@@ -1,16 +1,22 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:todo_app/firebase_helper/firebase_helper.dart';
+import 'package:todo_app/models/Category_add_model/category_add_model.dart';
 import 'package:todo_app/models/category_model.dart';
 import 'package:todo_app/models/task_priority_model.dart';
-import 'package:todo_app/modules/home_module/pages/Caetgory_screen.dart';
+import 'package:todo_app/modules/category_add_module/Caetgory_screen.dart';
+import 'package:todo_app/modules/category_add_module/controller/category_add_controler.dart';
 import 'package:todo_app/utiles/Constants/size.dart';
 import 'package:todo_app/utiles/helpers/helper_functions.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
+import '../modules/home_module/controller/task_controller.dart';
 import '../utiles/Constants/colors.dart';
 
-int checkedEditedIndex = 0;
+// int checkedEditedIndex = 0;
 
 class CategoryDialog extends StatefulWidget {
   const CategoryDialog({super.key, required this.optionalWidget});
@@ -21,8 +27,20 @@ class CategoryDialog extends StatefulWidget {
 }
 
 class _CategoryDialogState extends State<CategoryDialog> {
+  final TaskController tc = Get.find<TaskController>();
+  final CategoryAddControler ct = Get.find<CategoryAddControler>();
+
+  List<CategoryAddModel> categoryAddModelList = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    log(ct.listOfCategories.length.toString());
     return Dialog(
       child: Container(
         decoration: BoxDecoration(
@@ -46,17 +64,27 @@ class _CategoryDialogState extends State<CategoryDialog> {
                   height: 25.h,
                   thickness: 2.w,
                 ),
-                GridView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: CategoryModel.listOfCateoryModel.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                  ),
-                  itemBuilder: (context, index) {
-                    return buildWidget(index);
+
+                GetBuilder(
+                  init: CategoryAddControler(),
+                  builder: (controller) {
+                    if (controller.listOfCategories.isEmpty) {
+                      return Text("No Category");
+                    }
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: controller.listOfCategories.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                      ),
+                      itemBuilder: (context, index) {
+                        return buildWidget(index);
+                      },
+                    );
                   },
                 ),
+
                 // ..........
 
                 widget.optionalWidget
@@ -69,45 +97,61 @@ class _CategoryDialogState extends State<CategoryDialog> {
   }
 
   InkWell buildWidget(int index) {
-    bool checked = index == checkedEditedIndex;
+    bool checked = index == ct.checkedEditedIndex.value;
 
     return InkWell(
       onTap: () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
-            checkedEditedIndex = index;
+            ct.checkedEditedIndex.value = index;
           });
-          if (index == CategoryModel.listOfCateoryModel.length - 1) {
-            HelperFunctions.navigateToScreen(
-                context: context, screen: CategoryScreen());
-            log('Create ');
+          if (index == ct.listOfCategories.length - 1) {
+            Get.toNamed('/Category');
           }
         });
+
+        // INSERTING THE DATA OF SLELECTED CATEGORY IN TASK DECIDED CONTROLER
+        tc.iconColorA.value = ct.listOfCategories[index].iconColorA;
+        tc.iconColorB.value = ct.listOfCategories[index].iconColorB;
+        tc.iconColorG.value = ct.listOfCategories[index].iconColorG;
+        tc.iconColorR.value = ct.listOfCategories[index].iconColorR;
+
+        tc.iconCodePoint.value = ct.listOfCategories[index].iconCodePoint;
+        tc.iconFontFamilty.value = ct.listOfCategories[index].iconFontFamily;
       },
       child: SizedBox(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              width: 64,
-              height: 64,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  border: checked
-                      ? Border.all(color: Colors.blue.shade900, width: 3)
-                      : null,
-                  color: CategoryModel.listOfCateoryModel[index].colorCategory,
-                  borderRadius: BorderRadius.circular(2)),
-              child: Icon(CategoryModel.listOfCateoryModel[index].iconCategory,
-                  size: 32.w),
-            ),
+                width: 64,
+                height: 64,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                    border: checked
+                        ? Border.all(color: Colors.blue.shade900, width: 3)
+                        : null,
+                    color: Color.fromARGB(
+                        ct.listOfCategories[index].iconColorA,
+                        ct.listOfCategories[index].iconColorR,
+                        ct.listOfCategories[index].iconColorG,
+                        ct.listOfCategories[index].iconColorB),
+                    borderRadius: BorderRadius.circular(2)),
+                child: Icon(
+                  IconData(ct.listOfCategories[index].iconCodePoint,
+                      fontFamily: ct.listOfCategories[index].iconFontFamily),
+                  size: 32.w,
+                )
+                // Icon(,
+                //     size: 32.w),
+                ),
 
             // ..
 
             TextWidget(
                 padHori: 0,
                 padVerti: 0,
-                text: CategoryModel.listOfCateoryModel[index].nameOfCategory,
+                text: ct.listOfCategories[index].categoryName,
                 textStyle: KAppTypoGraphy.categoryTextStyle14M)
           ],
         ),

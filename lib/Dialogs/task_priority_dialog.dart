@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:todo_app/data/app_assets.dart';
 import 'package:todo_app/models/task_priority_model.dart';
+import 'package:todo_app/modules/home_module/controller/task_controller.dart';
 import 'package:todo_app/utiles/Constants/size.dart';
 import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
 
 import '../utiles/Constants/colors.dart';
 
-int checkedIndex = 0;
+// int checkedIndex = 0;
 
 class TaskPriorityDialog extends StatefulWidget {
   const TaskPriorityDialog(
@@ -18,13 +20,17 @@ class TaskPriorityDialog extends StatefulWidget {
       required this.onPressed});
   final String trigarBtnName;
   final Function() onCanceled;
-  final Function() onPressed;
+  final Function(int level) onPressed;
 
   @override
   State<TaskPriorityDialog> createState() => _TaskPriorityDialogState();
 }
 
 class _TaskPriorityDialogState extends State<TaskPriorityDialog> {
+  // int priorityLevel;
+  final TaskController tc = Get.find<TaskController>();
+
+  int priorityLevel = 1;
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -75,10 +81,13 @@ class _TaskPriorityDialogState extends State<TaskPriorityDialog> {
                       btnName: 'cancel',
                       onPressed: widget.onCanceled),
                   TrigareBtn(
-                      heightOfBtn: 48.h,
-                      widthOfBtn: 125.w,
-                      btnName: widget.trigarBtnName,
-                      onPressed: widget.onPressed),
+                    heightOfBtn: 48.h,
+                    widthOfBtn: 125.w,
+                    btnName: widget.trigarBtnName,
+                    onPressed: () {
+                      widget.onPressed(priorityLevel);
+                    },
+                  ),
                 ],
               )
             ],
@@ -89,7 +98,7 @@ class _TaskPriorityDialogState extends State<TaskPriorityDialog> {
   }
 
   InkWell buildWidget(int index) {
-    bool checked = index == checkedIndex;
+    tc.check.value = index == tc.checkPriorityIndex.value;
 
     // WidgetsBinding.instance.addPostFrameCallback((_){
     //     setState(() {
@@ -104,15 +113,17 @@ class _TaskPriorityDialogState extends State<TaskPriorityDialog> {
       onTap: () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
-            checkedIndex = index;
+            tc.checkPriorityIndex.value = index;
           });
         });
+
+        priorityLevel = TaskPriorityModel.listOfTaskPriority[index].no;
       },
       child: Container(
         width: 64.w,
         height: 64.h,
         decoration: BoxDecoration(
-            color: checked ? KColors.btn : KColors.taskboxColor,
+            color: tc.check.value ? KColors.btn : KColors.taskboxColor,
             borderRadius: BorderRadius.circular(2)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

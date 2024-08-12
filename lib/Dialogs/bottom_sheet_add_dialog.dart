@@ -4,7 +4,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
+import 'package:todo_app/modules/home_module/controller/task_controller.dart';
 
 import '../data/app_assets.dart';
 import '../modules/home_module/components/on_focus_textFormFieldWidget.dart';
@@ -20,6 +22,7 @@ showBottomSheetAddBtn(
     {required BuildContext context,
     required TextEditingController taskControler,
     required TextEditingController descriptionControler}) {
+  TaskController tc = Get.find<TaskController>();
   double padingbBtwIcons = 30.w;
   showModalBottomSheet(
       isScrollControlled: true,
@@ -101,7 +104,10 @@ showBottomSheetAddBtn(
                               builder: (context) => TaskPriorityDialog(
                                     trigarBtnName: 'Save',
                                     onCanceled: () {},
-                                    onPressed: () {},
+                                    onPressed: (level) {
+                                      Get.snackbar('Successfully', 'sellected');
+                                      Get.back();
+                                    },
                                   ));
                         },
                       ),

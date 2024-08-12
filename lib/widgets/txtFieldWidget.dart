@@ -16,7 +16,8 @@ class TextFieldWidget extends StatelessWidget {
       this.showSuffixPasswordIcon = false,
       this.onPressedIcon,
       this.showPrefixIcon = false,
-      this.prefixIconifTrue = const Icon(Icons.home)});
+      this.prefixIconifTrue = const Icon(Icons.home),
+      this.validation});
   final double padhori;
   final double padverti;
   final String hintText;
@@ -29,6 +30,7 @@ class TextFieldWidget extends StatelessWidget {
   final bool showPrefixIcon;
   final Icon prefixIconifTrue;
   final Function()? onPressedIcon;
+  final String? Function(String?)? validation;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +38,7 @@ class TextFieldWidget extends StatelessWidget {
       padding:
           EdgeInsets.symmetric(horizontal: padhori.w, vertical: padverti.w),
       child: TextFormField(
+        validator: validation,
         cursorColor: KColors.hintTxtColor,
         obscureText: obscureText,
         controller: controller,

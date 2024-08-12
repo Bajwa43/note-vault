@@ -1,10 +1,15 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/flutter_colorpicker.dart';
-// import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
-// import 'package:flutter_iconpicker/Models/icon_pack.dart';
-// import 'package:flutter_iconpicker/Models/IconPack.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:todo_app/firebase_helper/firebase_helper.dart';
+import 'package:todo_app/models/Category_add_model/category_add_model.dart';
+
 import 'package:todo_app/models/category_model.dart';
+import 'package:todo_app/modules/category_add_module/controller/category_add_controler.dart';
 import 'package:todo_app/modules/home_module/pages/components/color_picker_widget.dart';
 import 'package:todo_app/utiles/Constants/colors.dart';
 import 'package:todo_app/utiles/Constants/size.dart';
@@ -12,9 +17,8 @@ import 'package:todo_app/utiles/helpers/helper_functions.dart';
 import 'package:todo_app/widgets/Buttons/icon_btn.dart';
 import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
-// import 'package:flutter_iconpicker/flutter_iconpicker.dart' as ico;
-// import '../../../utiles/Constants/colors.dart';
-import '../../../widgets/txtFieldWidget.dart';
+
+import '../../widgets/txtFieldWidget.dart';
 
 class CategoryScreen extends StatefulWidget {
   const CategoryScreen({super.key});
@@ -25,13 +29,11 @@ class CategoryScreen extends StatefulWidget {
 
 class _CategoryScreenState extends State<CategoryScreen> {
   late TextEditingController categoryControler;
-  Icon? _icon;
+  CategoryAddControler ct = Get.find<CategoryAddControler>();
+  // Icon? _icon;
   late Color screenPickerColor;
-
-  ColorSwatch? _tempMainColor;
-  Color? _tempShadeColor;
-  ColorSwatch? _mainColor = Colors.blue;
-  Color? _shadeColor = Colors.blue[800];
+  // ColorSwatch? _tempMainColor;
+  // Color? _tempShadeColor;
 
   late TextEditingController _controller;
 
@@ -51,8 +53,11 @@ class _CategoryScreenState extends State<CategoryScreen> {
     super.dispose();
   }
 
+  CategoryAddControler cc = Get.find<CategoryAddControler>();
+
   @override
   Widget build(BuildContext context) {
+    log('reBuild');
     return Scaffold(
       backgroundColor: KColors.backGround,
       body: SafeArea(
@@ -67,6 +72,13 @@ class _CategoryScreenState extends State<CategoryScreen> {
             padVerti: 10.w,
           ),
           TextFieldWidget(
+            validation: (p0) {
+              if (p0 == null) {
+                return 'Category type';
+              } else {
+                return null;
+              }
+            },
             hintText: 'Category name',
             // hintColor: Color(0xFFAFAFAF),
             controller: categoryControler,
@@ -80,19 +92,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
             padVerti: 10.w,
           ),
 
-          // iconPiker(context),
-
-          // IconPicker(
-          //   controller: _controller,
-          //   //initialValue: _initialValue,
-          //   icon: Icon(Icons.apps),
-          //   labelText: "Icon",
-          //   enableSearch: true,
-          //   onChanged: (val) {},
-          //   validator: (val) {},
-          //   onSaved: (val) => setState(() {}),
-          // ),
-
+          IconBtnWidget(
+              widget: Icon(IconData(984246, fontFamily: 'MaterialIcons')),
+              onTap: () {
+                log(Icons.work.codePoint.toString());
+                log(Icons.work.fontFamily.toString());
+                // log(Icon(IconData()))
+                // HelperFirebase.firestoreInstance
+                ct.codePoint.value = Icons.add.codePoint;
+                ct.fontFamilty.value = Icons.add.fontFamily.toString();
+              }),
           TextWidget(
             text: 'Category color:',
             textStyle: KAppTypoGraphy.descriptionMedium,
@@ -103,38 +112,34 @@ class _CategoryScreenState extends State<CategoryScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
             child: Align(
-              alignment: Alignment.centerLeft,
-              child: TrigareBtn(
-                  // widthOfBtn: null,
-                  widthOfBtn: 100.w,
-                  heightOfBtn: 48.h,
-                  padText: EdgeInsets.symmetric(horizontal: 5),
-                  btnName: 'Select',
-                  btnColor: _tempShadeColor,
-                  // onPressed: () {
-                  //   HelperFunctions.navigateToScreen(
-                  //       context: context, screen: ColorPickerWidget());
-                  // }
-                  onPressed: () {}),
-            ),
+                alignment: Alignment.centerLeft,
+                child: Obx(() {
+                  log('reBuild2');
+
+                  return TrigareBtn(
+                    widthOfBtn: 100.w,
+                    heightOfBtn: 48.h,
+                    padText: const EdgeInsets.symmetric(horizontal: 5),
+                    btnName: 'Select',
+                    btnColor: Color.fromARGB(
+                      ct.colorA.value,
+                      ct.colorR.value,
+                      ct.colorG.value,
+                      ct.colorB.value,
+                    ),
+                    onPressed: () {},
+                  );
+                })),
           ),
           CustomColorPicker(
             colorSelectionCallBack: (p0) {
-              setState(() {
-                _tempShadeColor = p0;
-              });
+              ct.colorA.value = p0.alpha;
+              ct.colorB.value = p0.blue;
+              ct.colorG.value = p0.green;
+              ct.colorR.value = p0.red;
             },
           ),
-
-          // ColorPickerWidget(),
-          // ColorIndicator(
-
-          //     // width: 44,
-          //     // height: 44,
-          //     // borderRadius: 22,
-          //     // color: screenPickerColor,
-          //     ),
-          Spacer(),
+          const Spacer(),
           Padding(
             padding: EdgeInsets.symmetric(vertical: 60.w),
             child: Row(
@@ -154,13 +159,29 @@ class _CategoryScreenState extends State<CategoryScreen> {
                     heightOfBtn: 48.h,
                     btnName: 'Create Category',
                     onPressed: () {
-                      CategoryModel categoryModel = CategoryModel(
-                          iconCategory: Icons.access_alarm,
-                          nameOfCategory: categoryControler.text,
-                          colorCategory: screenPickerColor);
+                      if (categoryControler.text.isEmpty) {
+                        Get.snackbar('Type', 'Enter Category Type');
+                        log('message');
+                      } else {
+                        CategoryAddModel obj = CategoryAddModel(
+                            iconCodePoint: ct.codePoint.value,
+                            iconFontFamily: ct.fontFamilty.value,
+                            iconColorA: ct.colorA.value,
+                            iconColorB: ct.colorB.value,
+                            iconColorG: ct.colorG.value,
+                            iconColorR: ct.colorR.value,
+                            categoryName: categoryControler.text);
+                        cc.addCatagory(obj);
+                        Get.snackbar('SuccesFuly', 'Category Added');
+                      }
 
-                      CategoryModel.listOfCateoryModel.add(categoryModel);
-                      HelperFunctions.popBack(context: context);
+                      // CategoryModel categoryModel = CategoryModel(
+                      //     iconCategory: Icons.access_alarm,
+                      //     nameOfCategory: categoryControler.text,
+                      //     colorCategory: screenPickerColor);
+
+                      // CategoryModel.listOfCateoryModel.add(categoryModel);
+                      // HelperFunctions.popBack(context: context);
                     }),
               ],
             ),
@@ -186,8 +207,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                setState(() => _mainColor = _tempMainColor);
-                setState(() => _shadeColor = _tempShadeColor);
               },
               child: const Text('SUBMIT'),
             ),
