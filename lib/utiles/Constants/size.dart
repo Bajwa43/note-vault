@@ -123,9 +123,15 @@ class KAppTypoGraphy {
 
   // .....Timer Coundown
 
-  static TextStyle TimerTextStyle = TextStyle(
+  static TextStyle timerTextStyle = TextStyle(
     color: Color(0xFFFFFFFF),
     fontSize: 40.w,
+    fontWeight: FontWeight.w500,
+  );
+
+  static TextStyle dialogeText18Medium = TextStyle(
+    color: Color(0xFFFFFFFF),
+    fontSize: 18.w,
     fontWeight: FontWeight.w500,
   );
 }

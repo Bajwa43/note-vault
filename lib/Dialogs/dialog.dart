@@ -41,7 +41,7 @@ class DialogWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             TextWidget(
-                padVerti: 10.w,
+                padVerti: 0.w,
                 text: dialogTitle,
                 textStyle: KAppTypoGraphy.displayTitleSmall),
             // .......

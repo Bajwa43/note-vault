@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/firebase_helper/firebase_helper.dart';
+import 'package:todo_app/utiles/helpers/firebase_helper/firebase_helper.dart';
 import 'package:todo_app/models/Category_add_model/category_add_model.dart';
 
 class CategoryAddControler extends GetxController {

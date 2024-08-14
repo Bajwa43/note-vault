@@ -7,4 +7,9 @@ class HelperFirebase {
   static var categroyTypeFirestoreInstance =
       FirebaseFirestore.instance.collection('CategoryType');
   static var storageInstance = FirebaseStorage.instance;
+
+  static var tasksFirestoreInstance =
+      FirebaseFirestore.instance.collection('Tasks');
+
+  // static
 }

@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
           context: context, theme: ThemeData.dark());
 
       if (datetime != null) {
-        tc.dateTime.value = datetime;
+        tc.dueDate.value = datetime;
       } else {
         Fluttertoast.showToast(msg: 'DateTime is not Selected');
       }
@@ -223,19 +223,22 @@ class _HomeScreenState extends State<HomeScreen> {
                                 _formKey.currentState!.validate();
 
                                 try {
-                                  HomeTaskModel model = HomeTaskModel(
+                                  TaskModel model = TaskModel(
+                                      id: '',
                                       title: taskCtrl.text,
                                       description: descriptionCtrl.text,
-                                      dueDate: tc.dateTime.value,
+                                      dueDate: tc.dueDate.value,
                                       createdAt: DateTime.now(),
                                       updateAt: DateTime.now(),
                                       iconCodePoint: tc.iconCodePoint.value,
-                                      iconFontFamily: tc.iconFontFamilty.value,
+                                      iconFontFamily: tc.iconFontFamily.value,
                                       iconColorA: tc.iconColorA.value,
                                       iconColorB: tc.iconColorB.value,
                                       iconColorG: tc.iconColorG.value,
                                       iconColorR: tc.iconColorR.value,
-                                      priorityLevel: tc.priorityLevel.value);
+                                      priorityLevel: tc.priorityLevel.value,
+                                      status: TaskStatus.inprogress,
+                                      categoryName: tc.categoryName.value);
 
                                   tc.addNewTask(model);
                                   // tc.checkCategoryIndex.refresh();
@@ -243,7 +246,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                   // tc.priorityLevel.refresh();
                                   taskCtrl.clear();
                                   descriptionCtrl.clear();
-                                  tc.check.refresh();
 
                                   HelperFunctions.showToast(
                                       'Task is Added SuccessFully!');

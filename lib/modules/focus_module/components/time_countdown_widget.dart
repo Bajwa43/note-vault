@@ -25,7 +25,7 @@ class TimeCountdownWidget extends StatelessWidget {
       backgroundGradient: null,
       strokeWidth: 11.7,
       strokeCap: StrokeCap.square,
-      textStyle: KAppTypoGraphy.TimerTextStyle,
+      textStyle: KAppTypoGraphy.timerTextStyle,
       //  textAlign: TextAlign.center,
       textFormat: CountdownTextFormat.MM_SS,
       isReverse: false,

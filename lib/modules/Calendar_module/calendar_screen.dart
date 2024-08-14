@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app/models/decided_teask_model.dart';
 import 'package:todo_app/modules/home_module/components/home_bottom_navbar.dart';
 import 'package:todo_app/modules/home_module/components/on_screen/components/decided_task_card.dart';
+import 'package:todo_app/modules/home_module/controller/task_controller.dart';
 import 'package:todo_app/utiles/Constants/colors.dart';
 import 'package:todo_app/utiles/Constants/size.dart';
 import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
@@ -35,6 +37,7 @@ class _CalendarScreenState extends State<CalendarScreen> {
   late TextEditingController taskControler;
 
   late TextEditingController descriptionControler;
+  final TaskController tc = Get.find<TaskController>();
 
   @override
   void initState() {
@@ -146,13 +149,9 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
                     ),
                     TaskCardWidget(
-                        btnHide: btnHide,
-                        index: 0,
-                        list: DecidedTaskModel.listOfDecidedTask),
+                        btnHide: btnHide, taskModel: tc.listOfTask[0]),
                     TaskCardWidget(
-                        btnHide: btnHide,
-                        index: 0,
-                        list: DecidedTaskModel.listOfDecidedTask),
+                        btnHide: btnHide, taskModel: tc.listOfTask[0]),
 
                     // ListView.builder(
                     //   itemCount: listOfDecidedTasks.length,

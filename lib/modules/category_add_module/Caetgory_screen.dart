@@ -5,7 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/firebase_helper/firebase_helper.dart';
+import 'package:todo_app/utiles/helpers/firebase_helper/firebase_helper.dart';
 import 'package:todo_app/models/Category_add_model/category_add_model.dart';
 
 import 'package:todo_app/models/category_model.dart';

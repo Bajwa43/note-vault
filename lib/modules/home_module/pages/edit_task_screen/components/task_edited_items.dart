@@ -13,12 +13,14 @@ class TaskEditedItemsWidget extends StatelessWidget {
       required this.titleOfTask,
       required this.onPressed,
       required this.txtOfBtn,
-      this.widget});
+      this.widget,
+      this.btnColor});
   final Widget iconImage;
   final String titleOfTask;
   final Function() onPressed;
   final String txtOfBtn;
   final Widget? widget;
+  final Color? btnColor;
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +38,9 @@ class TaskEditedItemsWidget extends StatelessWidget {
             onTap: onPressed,
             nameOfBtn: txtOfBtn,
             widget: widget,
+            btnColor: btnColor,
             padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.w),
-            btnStyle: KAppTypoGraphy.descriptionHintTextLarge,
+            btnStyle: KAppTypoGraphy.descriptionLarge,
             btnBorder: BorderRadius.circular(6.w),
           ),
         ],

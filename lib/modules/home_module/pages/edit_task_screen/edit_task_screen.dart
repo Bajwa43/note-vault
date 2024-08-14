@@ -1,14 +1,22 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
+import 'package:todo_app/Dialogs/dialog.dart';
 import 'package:todo_app/data/app_assets.dart';
+import 'package:todo_app/models/HomeTaskModel/home_task_Model.dart';
 import 'package:todo_app/models/category_model.dart';
 import 'package:todo_app/models/decided_teask_model.dart';
 import 'package:todo_app/Dialogs/category_dialog.dart';
+import 'package:todo_app/modules/home_module/components/on_screen/components/decided_task_card.dart';
+import 'package:todo_app/modules/home_module/controller/task_controller.dart';
 import 'package:todo_app/modules/home_module/pages/edit_task_screen/components/task_edited_items.dart';
 import 'package:todo_app/utiles/Constants/colors.dart';
 import 'package:todo_app/utiles/Constants/size.dart';
+import 'package:todo_app/utiles/helpers/firebase_helper/firebase_helper.dart';
 import 'package:todo_app/utiles/helpers/helper_functions.dart';
 import 'package:todo_app/widgets/Buttons/icon_btn.dart';
 import 'package:todo_app/widgets/Buttons/negative_btn_withIcon_widget.dart';
@@ -19,8 +27,13 @@ import '../../components/on_focus_textFormFieldWidget.dart';
 import '../../../../Dialogs/task_priority_dialog.dart';
 
 class EditTaskScreen extends StatefulWidget {
-  const EditTaskScreen({super.key, required this.indexOfSelectedTask});
-  final int indexOfSelectedTask;
+  const EditTaskScreen({
+    super.key,
+    // required this.indexOfSelectedTask,
+    // required this.taskModel
+  });
+  // final int indexOfSelectedTask;
+  // final TaskModel taskModel;
 
   @override
   State<EditTaskScreen> createState() => _EditTaskScreenState();
@@ -29,6 +42,7 @@ class EditTaskScreen extends StatefulWidget {
 class _EditTaskScreenState extends State<EditTaskScreen> {
   late TextEditingController taskControler;
   late TextEditingController descriptionControler;
+  final TaskController tc = Get.find<TaskController>();
 
   @override
   void initState() {
@@ -47,128 +61,166 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // DateTime datetime = widget.taskModel.dueDate;
+
     return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 50.w),
-        child: Column(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              IconBtnWidget(
-                  widget:
-                      Icon(Icons.close, size: 24.sp, color: KColors.txtColor),
-                  btnBorder: BorderRadius.circular(4),
-                  padLeft: 4.w,
-                  padBottom: 4.w,
-                  padRight: 4.w,
-                  padTop: 4.w,
-                  onTap: () {
-                    HelperFunctions.popBack(context: context);
-                  }),
-              IconBtnWidget(
-                  widget:
-                      Icon(Icons.repeat, size: 24.sp, color: KColors.txtColor),
-                  btnBorder: BorderRadius.circular(4),
-                  padLeft: 4.w,
-                  padBottom: 4.w,
-                  padRight: 4.w,
-                  padTop: 4.w,
-                  onTap: () {}),
-            ],
-          ),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.w),
+          child: Obx(
+            () {
+              DateTime datetime = tc.dueDate.value;
 
-          // ......................................................
-          taskAndDescription(index: widget.indexOfSelectedTask),
-
-          // ......................................
-          TaskEditedItemsWidget(
-              iconImage: Icon(
-                Icons.alarm_add_outlined,
-                color: KColors.txtColor,
-                size: 24.sp,
-              ),
-              titleOfTask: 'Task Time:',
-              txtOfBtn: DecidedTaskModel
-                  .listOfDecidedTask[widget.indexOfSelectedTask].dateTime,
-              onPressed: () async {
-                DateTime? datetime = await showOmniDateTimePicker(
-                    context: context, theme: ThemeData.dark());
-              }),
-
-          TaskEditedItemsWidget(
-              iconImage: Icon(
-                Icons.label,
-                color: KColors.txtColor,
-                size: 24.sp,
-              ),
-              titleOfTask: 'Task Category:',
-              widget: SizedBox(
-                  width: 24.w,
-                  height: 24.h,
-                  child: SvgPicture.asset(KAppAssets.universityImage)),
-              txtOfBtn: DecidedTaskModel
-                  .listOfDecidedTask[widget.indexOfSelectedTask].category,
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return EditCategoryDialog(context);
-                    });
-              }),
-
-          TaskEditedItemsWidget(
-              iconImage: Image.asset(KAppAssets.flagImage, width: 24.sp),
-              titleOfTask: 'Task Priority:',
-              txtOfBtn: DecidedTaskModel
-                  .listOfDecidedTask[widget.indexOfSelectedTask].priority
-                  .toString(),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) => TaskPriorityDialog(
-                          trigarBtnName: 'Edit',
-                          onCanceled: () {
-                            HelperFunctions.popBack(context: context);
-                          },
-                          onPressed: (va) {},
-                        ));
-              }),
-
-          TaskEditedItemsWidget(
-              iconImage: Icon(
-                Icons.checklist_rtl,
-                color: KColors.txtColor,
-                size: 24.sp,
-              ),
-              titleOfTask: 'Sub-Task:',
-              txtOfBtn: 'Add Sub-Task',
-              onPressed: () {}),
-
-          // ...............
-
-          Align(
-            alignment: Alignment.topLeft,
-            child: NegativeBtnWithIconWidget(
-                btnText: 'Delete Task',
-                widget: Icon(
-                  Icons.delete_outline_outlined,
-                  color: Colors.red,
-                  size: 24.w,
+              String time = DateFormat.jm().format(datetime);
+              return Column(children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconBtnWidget(
+                        widget: Icon(Icons.close,
+                            size: 24.sp, color: KColors.txtColor),
+                        btnBorder: BorderRadius.circular(4),
+                        padLeft: 4.w,
+                        padBottom: 4.w,
+                        padRight: 4.w,
+                        padTop: 4.w,
+                        onTap: () {
+                          HelperFunctions.popBack(context: context);
+                        }),
+                    IconBtnWidget(
+                        widget: Icon(Icons.repeat,
+                            size: 24.sp, color: KColors.txtColor),
+                        btnBorder: BorderRadius.circular(4),
+                        padLeft: 4.w,
+                        padBottom: 4.w,
+                        padRight: 4.w,
+                        padTop: 4.w,
+                        onTap: () {}),
+                  ],
                 ),
-                onPressed: () {
-                  onDeleteTaskDialoge(context);
+
+                // ......................................................
+                taskAndDescription(
+                    task: tc.title.value, description: tc.description.value),
+
+                // ......................................
+                TaskEditedItemsWidget(
+                    iconImage: Icon(
+                      Icons.alarm_add_outlined,
+                      color: KColors.txtColor,
+                      size: 24.sp,
+                    ),
+                    titleOfTask: 'Task Time:',
+                    txtOfBtn: time,
+                    onPressed: () async {
+                      DateTime? datetime = await showOmniDateTimePicker(
+                          context: context, theme: ThemeData.dark());
+                      tc.dueDate.value = datetime!;
+
+                      tc.dueDate.value = datetime;
+                      tc.updateAt.value = datetime;
+                    }),
+
+                TaskEditedItemsWidget(
+                    iconImage: Icon(
+                      Icons.label,
+                      color: KColors.txtColor,
+                      size: 24.sp,
+                    ),
+                    titleOfTask: 'Task Category:',
+                    btnColor: Color.fromARGB(
+                        tc.iconColorA.value,
+                        tc.iconColorR.value,
+                        tc.iconColorG.value,
+                        tc.iconColorB.value),
+                    widget: SizedBox(
+                        width: 24.w,
+                        height: 24.h,
+                        child: SvgPicture.asset(KAppAssets.universityImage)),
+                    txtOfBtn: tc.categoryName.value,
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return EditCategoryDialog(context);
+                          });
+                    }),
+
+                TaskEditedItemsWidget(
+                    iconImage: Image.asset(KAppAssets.flagImage, width: 24.sp),
+                    titleOfTask: 'Task Priority:',
+                    txtOfBtn: tc.priorityLevel.value.toString(),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (context) => TaskPriorityDialog(
+                                trigarBtnName: 'Edit',
+                                onCanceled: () {
+                                  HelperFunctions.popBack(context: context);
+                                },
+                                onPressed: (va) {
+                                  tc.priorityLevel.value = va;
+                                  Get.back();
+                                },
+                              ));
+                    }),
+
+                Obx(() {
+                  return TaskEditedItemsWidget(
+                      iconImage: Icon(
+                        Icons.star_outline_sharp,
+                        color: KColors.txtColor,
+                        size: 24.sp,
+                      ),
+                      titleOfTask: 'Task Status:',
+                      txtOfBtn: tc.checkStatus.value
+                          ? fromTaskStatus(TaskStatus.completed)
+                          : fromTaskStatus(TaskStatus.inprogress),
+                      onPressed: () {});
                 }),
+
+                TaskEditedItemsWidget(
+                    iconImage: Icon(
+                      Icons.checklist_rtl,
+                      color: KColors.txtColor,
+                      size: 24.sp,
+                    ),
+                    titleOfTask: 'Sub-Task:',
+                    txtOfBtn: 'Add Sub-Task',
+                    onPressed: () {}),
+
+                // ...............
+
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: NegativeBtnWithIconWidget(
+                      btnText: 'Delete Task',
+                      widget: Icon(
+                        Icons.delete_outline_outlined,
+                        color: Colors.red,
+                        size: 24.w,
+                      ),
+                      onPressed: () {
+                        onDeleteTaskDialoge(context);
+                      }),
+                ),
+
+                // ..............
+
+                const Spacer(),
+                TrigareBtn(
+                    btnName: 'Update Task',
+                    widthOfBtn: 327.w,
+                    heightOfBtn: 48.h,
+                    onPressed: () {
+                      tc.updateTask(docId: tc.id.value);
+                      HelperFunctions.showToast('Updated Success Fully');
+                      Get.back();
+                    })
+              ]);
+            },
           ),
-
-          // ..............
-
-          Spacer(),
-          TrigareBtn(
-              btnName: 'Edit Task',
-              widthOfBtn: 327.w,
-              heightOfBtn: 48.h,
-              onPressed: () {})
-        ]),
+        ),
       ),
     );
   }
@@ -176,29 +228,60 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
   Future<dynamic> onDeleteTaskDialoge(BuildContext context) {
     return showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-              backgroundColor: KColors.bottomSheetColor,
-              title: Text('Delete this Task ?',
-                  style: TextStyle(color: Colors.white)),
-              actions: [
-                ElevatedButton(
-                    style: const ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll(Colors.transparent)),
-                    onPressed: () {
-                      HelperFunctions.popBack(context: context);
-                    },
-                    child: const Text('cancel')),
-                ElevatedButton(
-                    onPressed: () {
-                      DecidedTaskModel.listOfDecidedTask
-                          .removeAt(widget.indexOfSelectedTask);
-                      HelperFunctions.popBack(context: context);
-                      HelperFunctions.popBack(context: context);
-                    },
-                    child: const Text('Delete'))
-              ],
-            ));
+        builder: (context) => Dialog(
+              child: DialogWidget(
+                  widget: TextWidget(
+                    padVerti: 0,
+                    padHori: 0,
+                    text: '''Are You sure you want to delete this task?
+Task title : Do math homework''',
+                    textStyle: KAppTypoGraphy.dialogeText18Medium,
+                    textAlign: TextAlign.center,
+                    // style: TextStyle(color: Colors.white),
+                    // textAlign: TextAlign.center,
+                  ),
+                  trigarBtnName: 'Delete',
+                  dialogTitle: 'Delele Task',
+                  onPressed: () {
+                    tc.deleteTask(tc.id.value);
+                    HelperFunctions.showToast(
+                        '${tc.title.value} Task Deleted SuccessFully');
+                    Get.back();
+                    Get.back();
+                  },
+                  onCanceled: () {
+                    Get.back();
+                  },
+                  heightOfDialog: 200.h),
+            )
+        // AlertDialog(
+        //       backgroundColor: KColors.bottomSheetColor,
+        //       title: Text(
+        //         'Are You sure you want to delete this task? Task title : Do math homework',
+        //         style: TextStyle(color: Colors.white),
+        //         textAlign: TextAlign.center,
+        //       ),
+        //       actions: [
+        //         ElevatedButton(
+        //             style: const ButtonStyle(
+        //                 backgroundColor:
+        //                     MaterialStatePropertyAll(Colors.transparent)),
+        //             onPressed: () {
+        //               HelperFunctions.popBack(context: context);
+        //             },
+        //             child: const Text('cancel')),
+        //         ElevatedButton(
+        //             onPressed: () {
+        //               tc.deleteTask(widget.taskModel.id);
+        //               HelperFunctions.showToast(
+        //                   '${widget.taskModel.title} Task Deleted SuccessFully');
+        //               HelperFunctions.popBack(context: context);
+        //               HelperFunctions.popBack(context: context);
+        //             },
+        //             child: const Text('Delete'))
+        //       ],
+        //     )
+        );
   }
 
   CategoryDialog EditCategoryDialog(BuildContext context) {
@@ -220,13 +303,16 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
               heightOfBtn: 48.h,
               widthOfBtn: 120.w,
               btnName: 'Edit',
-              onPressed: () {}),
+              onPressed: () {
+                Get.back();
+              }),
         ],
       ),
     ));
   }
 
-  Padding taskAndDescription({required int index}) {
+  Padding taskAndDescription(
+      {required String task, required String description}) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 30.w),
       child: Column(
@@ -235,15 +321,23 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
             children: [
               // 1
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 21.w),
+                padding: EdgeInsets.symmetric(horizontal: 15.w),
                 child: SizedBox(
-                  width: 16.w,
-                  height: 16.h,
-                  child: Checkbox(
-                      fillColor: MaterialStatePropertyAll(KColors.txtColor),
-                      shape: const CircleBorder(),
-                      value: false,
-                      onChanged: (value) {}),
+                  width: 30.w,
+                  height: 20.h,
+                  child: Obx(
+                    () {
+                      return Checkbox(
+                          fillColor: MaterialStatePropertyAll(
+                              KColors.inerTextFieldColor),
+                          shape: const CircleBorder(),
+                          // value: tc.taskStatus.value == TaskStatus.inprogress ? false: true ,
+                          value: tc.checkStatus.value,
+                          onChanged: (value) {
+                            tc.togalTaskStatus(value: value!);
+                          });
+                    },
+                  ),
                 ),
               ),
 
@@ -256,8 +350,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                         alignmentGeometry: Alignment.topLeft,
                         padVerti: 0,
                         padHori: 0,
-                        text:
-                            DecidedTaskModel.listOfDecidedTask[index].taskTitle,
+                        text: task,
                         textStyle: KAppTypoGraphy.descriptionLarge),
                   ]),
               Spacer(),
@@ -285,7 +378,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
             alignmentGeometry: Alignment.topLeft,
             padHori: 60.w,
             padVerti: 0,
-            text: DecidedTaskModel.listOfDecidedTask[index].dateTime,
+            text: description,
             textStyle: KAppTypoGraphy.description2Medium,
           ),
         ],
@@ -348,7 +441,11 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                           heightOfBtn: 48.h,
                           widthOfBtn: 120.w,
                           btnName: 'Edit',
-                          onPressed: () {}),
+                          onPressed: () {
+                            tc.title.value = taskControler.text;
+                            tc.description.value = descriptionControler.text;
+                            Get.back();
+                          }),
                     ],
                   ),
                 )

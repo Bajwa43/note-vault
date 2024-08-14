@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/firebase_helper/firebase_helper.dart';
+import 'package:todo_app/utiles/helpers/firebase_helper/firebase_helper.dart';
 import 'package:todo_app/models/Category_add_model/category_add_model.dart';
 import 'package:todo_app/models/category_model.dart';
 import 'package:todo_app/models/task_priority_model.dart';
@@ -28,7 +28,7 @@ class CategoryDialog extends StatefulWidget {
 
 class _CategoryDialogState extends State<CategoryDialog> {
   final TaskController tc = Get.find<TaskController>();
-  final CategoryAddControler ct = Get.find<CategoryAddControler>();
+  final CategoryAddControler cc = Get.find<CategoryAddControler>();
 
   List<CategoryAddModel> categoryAddModelList = [];
 
@@ -40,7 +40,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
 
   @override
   Widget build(BuildContext context) {
-    log(ct.listOfCategories.length.toString());
+    log(cc.listOfCategories.length.toString());
     return Dialog(
       child: Container(
         decoration: BoxDecoration(
@@ -97,27 +97,28 @@ class _CategoryDialogState extends State<CategoryDialog> {
   }
 
   InkWell buildWidget(int index) {
-    bool checked = index == ct.checkedEditedIndex.value;
+    bool checked = index == cc.checkedEditedIndex.value;
 
     return InkWell(
       onTap: () {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           setState(() {
-            ct.checkedEditedIndex.value = index;
+            cc.checkedEditedIndex.value = index;
           });
-          if (index == ct.listOfCategories.length - 1) {
+          if (index == cc.listOfCategories.length - 1) {
             Get.toNamed('/Category');
           }
         });
 
         // INSERTING THE DATA OF SLELECTED CATEGORY IN TASK DECIDED CONTROLER
-        tc.iconColorA.value = ct.listOfCategories[index].iconColorA;
-        tc.iconColorB.value = ct.listOfCategories[index].iconColorB;
-        tc.iconColorG.value = ct.listOfCategories[index].iconColorG;
-        tc.iconColorR.value = ct.listOfCategories[index].iconColorR;
+        tc.iconColorA.value = cc.listOfCategories[index].iconColorA;
+        tc.iconColorB.value = cc.listOfCategories[index].iconColorB;
+        tc.iconColorG.value = cc.listOfCategories[index].iconColorG;
+        tc.iconColorR.value = cc.listOfCategories[index].iconColorR;
+        tc.categoryName.value = cc.listOfCategories[index].categoryName;
 
-        tc.iconCodePoint.value = ct.listOfCategories[index].iconCodePoint;
-        tc.iconFontFamilty.value = ct.listOfCategories[index].iconFontFamily;
+        tc.iconCodePoint.value = cc.listOfCategories[index].iconCodePoint;
+        tc.iconFontFamily.value = cc.listOfCategories[index].iconFontFamily;
       },
       child: SizedBox(
         child: Column(
@@ -132,14 +133,14 @@ class _CategoryDialogState extends State<CategoryDialog> {
                         ? Border.all(color: Colors.blue.shade900, width: 3)
                         : null,
                     color: Color.fromARGB(
-                        ct.listOfCategories[index].iconColorA,
-                        ct.listOfCategories[index].iconColorR,
-                        ct.listOfCategories[index].iconColorG,
-                        ct.listOfCategories[index].iconColorB),
+                        cc.listOfCategories[index].iconColorA,
+                        cc.listOfCategories[index].iconColorR,
+                        cc.listOfCategories[index].iconColorG,
+                        cc.listOfCategories[index].iconColorB),
                     borderRadius: BorderRadius.circular(2)),
                 child: Icon(
-                  IconData(ct.listOfCategories[index].iconCodePoint,
-                      fontFamily: ct.listOfCategories[index].iconFontFamily),
+                  IconData(cc.listOfCategories[index].iconCodePoint,
+                      fontFamily: cc.listOfCategories[index].iconFontFamily),
                   size: 32.w,
                 )
                 // Icon(,
@@ -151,7 +152,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
             TextWidget(
                 padHori: 0,
                 padVerti: 0,
-                text: ct.listOfCategories[index].categoryName,
+                text: cc.listOfCategories[index].categoryName,
                 textStyle: KAppTypoGraphy.categoryTextStyle14M)
           ],
         ),

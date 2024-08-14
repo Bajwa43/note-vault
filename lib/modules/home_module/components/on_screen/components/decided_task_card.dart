@@ -1,8 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_app/data/app_assets.dart';
+import 'package:todo_app/models/HomeTaskModel/home_task_Model.dart';
 import 'package:todo_app/models/decided_teask_model.dart';
+import 'package:todo_app/modules/home_module/controller/task_controller.dart';
 import 'package:todo_app/modules/home_module/pages/edit_task_screen/edit_task_screen.dart';
 import 'package:todo_app/utiles/Constants/colors.dart';
 import 'package:todo_app/utiles/Constants/size.dart';
@@ -11,27 +17,55 @@ import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
 
 class TaskCardWidget extends StatelessWidget {
-  final Color? btnColor;
-
-  const TaskCardWidget(
+  TaskCardWidget(
       {super.key,
-      required this.index,
-      required this.list,
+      // required this.index,
+      // required this.list,
       this.btnHide = false,
-      this.btnColor});
-  final int index;
-  final List<dynamic> list;
+      this.btnColor,
+      required this.taskModel});
+  // final int index;
+  // final List<dynamic> list;
+  final TaskModel taskModel;
   final btnHide;
+  final Color? btnColor;
+  final TaskController tc = Get.find<TaskController>();
 
   @override
   Widget build(BuildContext context) {
+    DateTime dateTime = taskModel.dueDate;
+    String time = DateFormat.jm().format(dateTime);
+    // DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+    DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+
+    String all = dateFormat.format(dateTime);
+
+    String myHour = time.substring(0, 2); // parse your string
+    String myMin = time.substring(2, 4);
+
+    log('>> ${myHour}${myMin}');
+    log(all);
+    // log(myHour);
+
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.w),
       child: InkWell(
         onTap: () {
+          tc.title.value = taskModel.title;
+          tc.description.value = taskModel.description;
+          tc.dueDate.value = taskModel.dueDate;
+          tc.categoryName.value = taskModel.categoryName;
+          tc.iconCodePoint.value = taskModel.iconCodePoint;
+          tc.iconFontFamily.value = taskModel.iconFontFamily;
+          tc.iconColorA.value = taskModel.iconColorA;
+          tc.iconColorB.value = taskModel.iconColorB;
+          tc.iconColorG.value = taskModel.iconColorG;
+          tc.iconColorR.value = taskModel.iconColorR;
+          tc.priorityLevel.value = taskModel.priorityLevel;
+          tc.id.value = taskModel.id;
+
           HelperFunctions.navigateToScreen(
-              context: context,
-              screen: EditTaskScreen(indexOfSelectedTask: index));
+              context: context, screen: const EditTaskScreen());
         },
         child: Container(
             width: 327.w,
@@ -65,13 +99,13 @@ class TaskCardWidget extends StatelessWidget {
                             alignmentGeometry: Alignment.topLeft,
                             padVerti: 0,
                             padHori: 0,
-                            text: list[index].taskTitle,
+                            text: taskModel.title,
                             textStyle: KAppTypoGraphy.descriptionMedium),
                         TextWidget(
                           alignmentGeometry: Alignment.topLeft,
                           padHori: 0,
                           padVerti: 0,
-                          text: list[index].dateTime,
+                          text: time,
                           textStyle: KAppTypoGraphy.dateTimeTextStyle14N,
                         ),
                       ]),
@@ -91,10 +125,14 @@ class TaskCardWidget extends StatelessWidget {
                                 padText: EdgeInsets.all(3),
                                 btnTextStyle:
                                     KAppTypoGraphy.descriptionTextMedium,
-                                icon: Icon(Icons.home,
-                                    size: 14.w, color: KColors.txtColor),
+                                icon: Icon(
+                                  IconData(taskModel.iconCodePoint,
+                                      fontFamily: taskModel.iconFontFamily),
+                                  size: 14.w,
+                                  color: KColors.txtColor,
+                                ),
                                 // flatBtn: true,
-                                btnName: list[index].category.toString(),
+                                btnName: taskModel.categoryName,
                                 onPressed: () {}),
                           ),
                         ),
@@ -112,7 +150,7 @@ class TaskCardWidget extends StatelessWidget {
                               icon: Image.asset(KAppAssets.flagImage,
                                   width: 14.w, color: KColors.hintTxtColor),
                               flatBtn: true,
-                              btnName: list[index].priority.toString(),
+                              btnName: taskModel.priorityLevel.toString(),
                               onPressed: () {}),
                         )
                 ],
