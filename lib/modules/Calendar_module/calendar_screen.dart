@@ -149,9 +149,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
                       ),
                     ),
                     TaskCardWidget(
-                        btnHide: btnHide, taskModel: tc.listOfTask[0]),
+                        btnHide: btnHide,
+                        taskModel: tc.listOfInProgressTask[0]),
                     TaskCardWidget(
-                        btnHide: btnHide, taskModel: tc.listOfTask[0]),
+                        btnHide: btnHide,
+                        taskModel: tc.listOfInProgressTask[0]),
 
                     // ListView.builder(
                     //   itemCount: listOfDecidedTasks.length,

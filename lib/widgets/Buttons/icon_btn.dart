@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app/utiles/Constants/colors.dart';
 
 class IconBtnWidget extends StatelessWidget {
@@ -27,16 +28,17 @@ class IconBtnWidget extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.only(
           bottom: padBottom, left: padLeft, right: padRight, top: padTop),
-      child: Material(
-        child: InkWell(
-            onTap: onTap,
-            child: Container(
-                decoration: BoxDecoration(
-                    color:
-                        btnColor == null ? KColors.bottomSheetColor : btnColor,
-                    borderRadius: btnBorder),
-                child: widget)),
-      ),
+      child: InkWell(
+          borderRadius: BorderRadius.circular(2),
+          onTap: onTap,
+          child: Container(
+              clipBehavior: Clip.hardEdge,
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                  color: btnColor == null ? KColors.bottomSheetColor : btnColor,
+                  borderRadius: btnBorder ?? BorderRadius.circular(10.w)),
+              child: widget)),
     );
   }
 }

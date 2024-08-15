@@ -115,6 +115,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
         tc.iconColorB.value = cc.listOfCategories[index].iconColorB;
         tc.iconColorG.value = cc.listOfCategories[index].iconColorG;
         tc.iconColorR.value = cc.listOfCategories[index].iconColorR;
+
         tc.categoryName.value = cc.listOfCategories[index].categoryName;
 
         tc.iconCodePoint.value = cc.listOfCategories[index].iconCodePoint;

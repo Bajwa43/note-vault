@@ -15,6 +15,7 @@ import 'package:todo_app/widgets/Buttons/combine_button.dart';
 import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 
 import 'package:todo_app/widgets/txtFieldWidget.dart';
+import 'package:todo_app/widgets/txtWidget.dart';
 
 class OnScreen extends StatelessWidget {
   final TextEditingController controller;
@@ -32,7 +33,8 @@ class OnScreen extends StatelessWidget {
       child: GetBuilder(
         init: TaskController(),
         builder: (cont) {
-          if (cont.listOfTask.isEmpty) {
+          if (cont.listOfInProgressTask.isEmpty &&
+              cont.listOfCompletedTask.isEmpty) {
             return const NoScreenWidget();
           }
           return Column(
@@ -55,42 +57,54 @@ class OnScreen extends StatelessWidget {
                       onTap: () {},
                     ),
                   ),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: cont.listOfTask.length,
-                    // itemCount: 1,
-                    itemBuilder: (context, index) {
-                      TaskModel taskModel = cont.listOfTask[index];
-                      return TaskCardWidget(
-                        btnColor: Colors.blue,
-                        taskModel: taskModel,
-                      );
-                    },
-                  ),
+                  cont.listOfInProgressTask.isEmpty
+                      ? TextWidget(
+                          text: 'Not Active Any Task At this Time',
+                          textStyle: KAppTypoGraphy.dialogeText18Medium)
+                      : ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: cont.listOfInProgressTask.length,
+                          // itemCount: 1,
+                          itemBuilder: (context, index) {
+                            TaskModel taskModel =
+                                cont.listOfInProgressTask[index];
+                            return TaskCardWidget(
+                              taskModel: taskModel,
+                            );
+                          },
+                        ),
 
                   // ............>Completed
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: CombineButtonWidget(
-                      widthOfBtn: 102.w,
-                      btnText: 'Completed',
-                      onTap: () {},
+                  Padding(
+                    padding: EdgeInsets.only(top: 10.h),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: CombineButtonWidget(
+                        widthOfBtn: 102.w,
+                        btnText: 'Completed',
+                        onTap: () {},
+                      ),
                     ),
                   ),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: cont.listOfTask.length,
-                    // itemCount: 2,
-                    itemBuilder: (context, index) {
-                      TaskModel taskModel = cont.listOfTask[index];
-                      return TaskCardWidget(
-                        btnHide: true,
-                        taskModel: taskModel,
-                      );
-                    },
-                  ),
+                  cont.listOfCompletedTask.isEmpty
+                      ? TextWidget(
+                          text: 'No Completed Task History',
+                          textStyle: KAppTypoGraphy.dialogeText18Medium)
+                      : ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: cont.listOfCompletedTask.length,
+                          // itemCount: 2,
+                          itemBuilder: (context, index) {
+                            TaskModel taskModel =
+                                cont.listOfCompletedTask[index];
+                            return TaskCardWidget(
+                              btnHide: true,
+                              taskModel: taskModel,
+                            );
+                          },
+                        ),
                 ],
               ),
 

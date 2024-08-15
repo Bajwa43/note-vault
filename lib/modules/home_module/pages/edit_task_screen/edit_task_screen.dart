@@ -66,7 +66,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.w),
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
           child: Obx(
             () {
               DateTime datetime = tc.dueDate.value;
@@ -202,6 +202,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                       ),
                       onPressed: () {
                         onDeleteTaskDialoge(context);
+                        tc.update();
                       }),
                 ),
 
@@ -216,6 +217,8 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                       tc.updateTask(docId: tc.id.value);
                       HelperFunctions.showToast('Updated Success Fully');
                       Get.back();
+                      // tc.checkStatus.value = false;
+                      // tc.taskStatus.value = TaskStatus.inprogress;
                     })
               ]);
             },

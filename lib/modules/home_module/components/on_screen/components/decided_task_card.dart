@@ -22,13 +22,13 @@ class TaskCardWidget extends StatelessWidget {
       // required this.index,
       // required this.list,
       this.btnHide = false,
-      this.btnColor,
+      // this.btnColor,
       required this.taskModel});
   // final int index;
   // final List<dynamic> list;
   final TaskModel taskModel;
   final btnHide;
-  final Color? btnColor;
+  // final Color? btnColor;
   final TaskController tc = Get.find<TaskController>();
 
   @override
@@ -63,6 +63,8 @@ class TaskCardWidget extends StatelessWidget {
           tc.iconColorR.value = taskModel.iconColorR;
           tc.priorityLevel.value = taskModel.priorityLevel;
           tc.id.value = taskModel.id;
+          tc.checkStatus.value =
+              taskModel.status == TaskStatus.completed ? true : false;
 
           HelperFunctions.navigateToScreen(
               context: context, screen: const EditTaskScreen());
@@ -81,14 +83,17 @@ class TaskCardWidget extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8.w),
                     child: SizedBox(
-                      // width: 16.w,
-                      // height: 16.h,
-                      child: SvgPicture.asset(KAppAssets.ringImage),
-                      // child: Checkbox(
-                      //     fillColor: MaterialStatePropertyAll(KColors.txtColor),
-                      //     shape: const CircleBorder(),
-                      //     value: false,
-                      //     onChanged: (value) {}),
+                      width: 16.w,
+                      height: 16.h,
+                      // child: SvgPicture.asset(KAppAssets.ringImage),
+                      child: Checkbox(
+                          fillColor: MaterialStatePropertyAll(
+                              KColors.bottomSheetColor),
+                          shape: const CircleBorder(),
+                          value: taskModel.status == TaskStatus.completed
+                              ? true
+                              : false,
+                          onChanged: (value) {}),
                     ),
                   ),
                   Column(
@@ -117,7 +122,11 @@ class TaskCardWidget extends StatelessWidget {
                           child: Padding(
                             padding: EdgeInsets.symmetric(horizontal: 5.w),
                             child: TrigareBtn(
-                                btnColor: btnColor,
+                                btnColor: Color.fromARGB(
+                                    taskModel.iconColorA,
+                                    taskModel.iconColorR,
+                                    taskModel.iconColorG,
+                                    taskModel.iconColorB),
                                 heightOfBtn: 29.h,
                                 widthOfBtn: null,
                                 showBothIconWithText: true,

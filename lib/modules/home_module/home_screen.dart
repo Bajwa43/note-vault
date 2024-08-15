@@ -43,6 +43,12 @@ class _HomeScreenState extends State<HomeScreen> {
   FocusNode focusNode1 = FocusNode();
   final TaskController tc = Get.find<TaskController>();
 
+  Color? _dateBtnColor;
+
+  Color? _categoryBtnColor;
+
+  Color? _priorityBtnColor;
+
   @override
   void initState() {
     super.initState();
@@ -74,6 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
           context: context, theme: ThemeData.dark());
 
       if (datetime != null) {
+        _dateBtnColor = KColors.btn;
         tc.dueDate.value = datetime;
       } else {
         Fluttertoast.showToast(msg: 'DateTime is not Selected');
@@ -84,6 +91,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _selectCategory() {
+    _categoryBtnColor = Color.fromARGB(tc.iconColorA.value, tc.iconColorR.value,
+        tc.iconColorG.value, tc.iconColorB.value);
     Get.back();
   }
 
@@ -165,6 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       Row(
                         children: [
                           IconBtnWidget(
+                            btnColor: _dateBtnColor ?? null,
                             padRight: padingbBtwIcons,
                             widget: Icon(
                               Icons.alarm_add_outlined,
@@ -172,9 +182,11 @@ class _HomeScreenState extends State<HomeScreen> {
                               size: 24.sp,
                             ),
                             onTap: _getDateTime,
+                            // btnBorder: BorderRadius.circular(10),
                           ),
                           // ................................
                           IconBtnWidget(
+                            btnColor: _categoryBtnColor,
                             padRight: padingbBtwIcons,
                             widget: SvgPicture.asset(KAppAssets.categoryImage),
                             onTap: () {
@@ -192,6 +204,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           // .........................................
                           IconBtnWidget(
+                            btnColor: _priorityBtnColor,
                             padRight: padingbBtwIcons,
                             widget: SvgPicture.asset(KAppAssets.flgImage),
                             onTap: () {
@@ -208,6 +221,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               msg: 'Selected: $level');
                                           HelperFunctions.popBack(
                                               context: context);
+                                          _priorityBtnColor = KColors.btn;
                                         },
                                       ));
                             },
@@ -247,6 +261,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   taskCtrl.clear();
                                   descriptionCtrl.clear();
 
+                                  _categoryBtnColor = null;
+                                  _dateBtnColor = null;
+                                  _priorityBtnColor = null;
                                   HelperFunctions.showToast(
                                       'Task is Added SuccessFully!');
                                 } catch (e) {

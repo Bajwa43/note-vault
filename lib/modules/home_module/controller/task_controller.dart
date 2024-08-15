@@ -33,12 +33,18 @@ class TaskController extends GetxController {
   RxInt checkPriorityIndex = 0.obs;
   RxBool check = false.obs;
 
-  RxList<TaskModel> _listOfTasks = <TaskModel>[].obs;
-  List<TaskModel> get listOfTask => _listOfTasks.value;
+  RxList<TaskModel> _listOfInProgressTasks = <TaskModel>[].obs;
+  List<TaskModel> get listOfInProgressTask => _listOfInProgressTasks.value;
+
+  // COMPLETED LIST
+  RxList<TaskModel> _listOfCompletedTasks = <TaskModel>[].obs;
+  List<TaskModel> get listOfCompletedTask => _listOfCompletedTasks.value;
 
   @override
   void onInit() {
-    _listOfTasks.bindStream(getCategoryTypes());
+    _listOfInProgressTasks.bindStream(getTasks(status: TaskStatus.inprogress));
+    _listOfCompletedTasks.bindStream(getTasks(status: TaskStatus.completed));
+
     super.onInit();
   }
 
@@ -83,9 +89,11 @@ class TaskController extends GetxController {
     await HelperFirebase.tasksFirestoreInstance.doc(id).delete();
   }
 
-  Stream<List<TaskModel>> getCategoryTypes() {
-    Stream<List<TaskModel>> list =
-        HelperFirebase.tasksFirestoreInstance.snapshots().map(
+  Stream<List<TaskModel>> getTasks({required TaskStatus status}) {
+    return HelperFirebase.tasksFirestoreInstance
+        .where('status', isEqualTo: fromTaskStatus(status))
+        .snapshots()
+        .map(
       (event) {
         return event.docs.map(
           (e) {
@@ -96,8 +104,7 @@ class TaskController extends GetxController {
         ).toList();
       },
     );
-
-    return list;
+    // return list;
   }
 
   addNewTask(TaskModel model) async {
