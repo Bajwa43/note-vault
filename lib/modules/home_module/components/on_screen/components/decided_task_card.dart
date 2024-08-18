@@ -33,24 +33,28 @@ class TaskCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DateTime dateTime = taskModel.dueDate;
+    DateTime dateTime = taskModel.dueDateTime;
     String time = DateFormat.jm().format(dateTime);
     // DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-    DateFormat dateFormat = DateFormat("yyyy-MM-dd");
+    // DateFormat dateFormat = DateFormat("yyyy-MM-dd");
 
-    String all = dateFormat.format(dateTime);
+    // String all = dateFormat.format(dateTime);
 
-    String myHour = time.substring(0, 2); // parse your string
-    String myMin = time.substring(2, 4);
+    // String myHour = time.substring(0, 2); // parse your string
+    // String myMin = time.substring(2, 4);
 
-    log('>> ${myHour}${myMin}');
-    log(all);
+    // log('>> ${myHour}${myMin}');
+    // log(all);
     // log(myHour);
 
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 10.w),
       child: InkWell(
         onTap: () {
+          // log('>> IDM : ${taskModel.id.toString()}');
+          // log('>> IDtc : ${tc.id.value.toString()}');
+
+          tc.id.value = taskModel.id;
           tc.title.value = taskModel.title;
           tc.description.value = taskModel.description;
           tc.dueDate.value = taskModel.dueDate;

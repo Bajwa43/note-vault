@@ -3,9 +3,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:todo_app/modules/Calendar_module/controller/calendar_controller.dart';
 import 'package:todo_app/modules/auth_module/Login/login_screen.dart';
 import 'package:todo_app/modules/auth_module/register/register_screnn.dart';
 import 'package:todo_app/modules/category_add_module/controller/category_add_controler.dart';
+import 'package:todo_app/modules/focus_module/focus_screen.dart';
 import 'package:todo_app/modules/home_module/controller/task_controller.dart';
 import 'package:todo_app/modules/home_module/home_screen.dart';
 import 'package:todo_app/modules/category_add_module/Caetgory_screen.dart';
@@ -29,8 +31,9 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final TaskController taskController = Get.put(TaskController());
-  final categoryAddControler = Get.put(CategoryAddControler());
-
+  final CategoryAddControler categoryAddControler =
+      Get.put(CategoryAddControler());
+  final CalendarController calendarController = Get.put(CalendarController());
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -54,8 +57,9 @@ class MyApp extends StatelessWidget {
               GetPage(name: '/start', page: () => const StartScreen()),
               GetPage(name: '/login', page: () => const LoginScreen()),
               GetPage(name: '/register', page: () => const RegisterScreen()),
-              GetPage(name: '/', page: () => const HomeScreen()),
+              // GetPage(name: '/', page: () => const HomeScreen()),
               GetPage(name: '/Category', page: () => const CategoryScreen()),
+              GetPage(name: '/', page: () => const FocusScreen())
             ],
           );
         });

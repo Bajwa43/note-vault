@@ -37,6 +37,7 @@ class OnScreen extends StatelessWidget {
               cont.listOfCompletedTask.isEmpty) {
             return const NoScreenWidget();
           }
+
           return Column(
             children: [
               TextFieldWidget(
@@ -57,6 +58,7 @@ class OnScreen extends StatelessWidget {
                       onTap: () {},
                     ),
                   ),
+
                   cont.listOfInProgressTask.isEmpty
                       ? TextWidget(
                           text: 'Not Active Any Task At this Time',

@@ -29,6 +29,7 @@ class _FocusScreenState extends State<FocusScreen> {
     // TODO: implement initState
     super.initState();
     timeControler = CountDownController();
+    timeControler.getTime();
   }
 
   @override
@@ -44,8 +45,9 @@ class _FocusScreenState extends State<FocusScreen> {
                   padHori: 0,
                   text: 'Focus Mode',
                   textStyle: KAppTypoGraphy.displayTitleMedium),
-
+// ......................Timer
               TimeCountdownWidget(timeControler: timeControler),
+
               TextWidget(
                   padVerti: 20.w,
                   padHori: 0,

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -66,10 +68,10 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.w),
+          padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 20.w),
           child: Obx(
             () {
-              DateTime datetime = tc.dueDate.value;
+              DateTime datetime = tc.dueDateTime.value;
 
               String time = DateFormat.jm().format(datetime);
               return Column(children: [
@@ -115,10 +117,15 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                     onPressed: () async {
                       DateTime? datetime = await showOmniDateTimePicker(
                           context: context, theme: ThemeData.dark());
-                      tc.dueDate.value = datetime!;
 
-                      tc.dueDate.value = datetime;
-                      tc.updateAt.value = datetime;
+                      DateTime date = DateTime(
+                          datetime!.year, datetime.minute, datetime.day);
+
+                      tc.dueDate.value = date;
+                      tc.dueDateTime.value = datetime;
+
+                      // tc.dueDate.value = datetime;
+                      // tc.updateAt.value = datetime;
                     }),
 
                 TaskEditedItemsWidget(
@@ -151,6 +158,12 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                     titleOfTask: 'Task Priority:',
                     txtOfBtn: tc.priorityLevel.value.toString(),
                     onPressed: () {
+                      log(tc.priorityLevel.value.toString());
+                      log('>> ID : ${tc.id.value.toString()}');
+                      log('>> Category : ${tc.categoryName.toString()}');
+                      log('>> description : ${tc.description.toString()}');
+                      log('>> title : ${tc.title.toString()}');
+
                       showDialog(
                           context: context,
                           builder: (context) => TaskPriorityDialog(
@@ -214,7 +227,11 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                     widthOfBtn: 327.w,
                     heightOfBtn: 48.h,
                     onPressed: () {
+                      tc.update();
+
+                      log('>> ${tc.id.value}');
                       tc.updateTask(docId: tc.id.value);
+
                       HelperFunctions.showToast('Updated Success Fully');
                       Get.back();
                       // tc.checkStatus.value = false;
@@ -246,6 +263,7 @@ Task title : Do math homework''',
                   trigarBtnName: 'Delete',
                   dialogTitle: 'Delele Task',
                   onPressed: () {
+                    log(tc.id.value);
                     tc.deleteTask(tc.id.value);
                     HelperFunctions.showToast(
                         '${tc.title.value} Task Deleted SuccessFully');
@@ -317,7 +335,7 @@ Task title : Do math homework''',
   Padding taskAndDescription(
       {required String task, required String description}) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 30.w),
+      padding: EdgeInsets.symmetric(vertical: 20.w),
       child: Column(
         children: [
           Row(
