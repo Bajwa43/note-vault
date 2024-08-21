@@ -3,8 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo_app/data/app_assets.dart';
 
-import '../../../utiles/Constants/colors.dart';
-import '../../../utiles/Constants/size.dart';
+import '../../../data/Constants/colors.dart';
+import '../../../data/Constants/size.dart';
 import '../../../widgets/txtWidget.dart';
 
 class ApplicationCardWidget extends StatelessWidget {

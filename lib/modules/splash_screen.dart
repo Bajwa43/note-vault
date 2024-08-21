@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app/data/app_assets.dart';
 import 'package:todo_app/modules/onboading_module/onboarding_screen.dart';
-import 'package:todo_app/utiles/Constants/text_strings.dart';
-import 'package:todo_app/utiles/Constants/theme.dart';
-import 'package:todo_app/utiles/helpers/helper_functions.dart';
+import 'package:todo_app/data/Constants/text_strings.dart';
+import 'package:todo_app/data/Constants/theme.dart';
+import 'package:todo_app/data/helpers/helper_functions.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

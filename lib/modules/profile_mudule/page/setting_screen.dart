@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:todo_app/utiles/Constants/size.dart';
-import 'package:todo_app/utiles/helpers/helper_functions.dart';
+import 'package:todo_app/data/Constants/size.dart';
+import 'package:todo_app/data/helpers/helper_functions.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
 
 import '../../../data/app_assets.dart';

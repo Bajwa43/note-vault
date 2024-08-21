@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/models/HomeTaskModel/home_task_Model.dart';
 import 'package:todo_app/modules/home_module/controller/task_controller.dart';
-import 'package:todo_app/utiles/helpers/firebase_helper/firebase_helper.dart';
+import 'package:todo_app/data/helpers/firebase_helper/firebase_helper.dart';
 
 class CalendarController extends GetxController {
   RxBool completedBtnOffFocus = true.obs;

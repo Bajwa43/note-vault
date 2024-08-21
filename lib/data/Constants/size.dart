@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:todo_app/utiles/Constants/colors.dart';
+import 'package:todo_app/data/Constants/colors.dart';
 
 class KAppTypoGraphy {
   static final onBoadingTitleSize = 32.w;

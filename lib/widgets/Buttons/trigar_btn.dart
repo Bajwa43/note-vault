@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:todo_app/utiles/Constants/colors.dart';
+import 'package:todo_app/data/Constants/colors.dart';
 
 class TrigareBtn extends StatelessWidget {
   const TrigareBtn(
@@ -22,12 +22,14 @@ class TrigareBtn extends StatelessWidget {
       this.heightOfBtn,
       this.padOfIcon,
       this.padText,
-      this.btnColor})
+      this.btnColor,
+      this.onLongPress})
       : super(key: key);
 
   final double? widthOfBtn;
   final String btnName;
   final VoidCallback onPressed;
+  final VoidCallback? onLongPress;
   final bool flatBtn;
   final double? padVerti;
   final bool showJustIcon;
@@ -48,6 +50,7 @@ class TrigareBtn extends StatelessWidget {
       padding:
           EdgeInsets.symmetric(vertical: padVerti == null ? 10.w : padVerti!.w),
       child: InkWell(
+        onLongPress: onLongPress,
         borderRadius: inkWellEffectForCircleBtn
             ? BorderRadius.circular(50.w)
             : BorderRadius.circular(10.w),

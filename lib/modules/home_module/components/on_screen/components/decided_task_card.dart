@@ -10,9 +10,9 @@ import 'package:todo_app/models/HomeTaskModel/home_task_Model.dart';
 import 'package:todo_app/models/decided_teask_model.dart';
 import 'package:todo_app/modules/home_module/controller/task_controller.dart';
 import 'package:todo_app/modules/home_module/pages/edit_task_screen/edit_task_screen.dart';
-import 'package:todo_app/utiles/Constants/colors.dart';
-import 'package:todo_app/utiles/Constants/size.dart';
-import 'package:todo_app/utiles/helpers/helper_functions.dart';
+import 'package:todo_app/data/Constants/colors.dart';
+import 'package:todo_app/data/Constants/size.dart';
+import 'package:todo_app/data/helpers/helper_functions.dart';
 import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
 

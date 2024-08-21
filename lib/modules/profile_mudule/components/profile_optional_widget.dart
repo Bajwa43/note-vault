@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app/data/app_assets.dart';
 import 'package:todo_app/models/decided_teask_model.dart';
-import 'package:todo_app/utiles/Constants/colors.dart';
-import 'package:todo_app/utiles/Constants/size.dart';
+import 'package:todo_app/data/Constants/colors.dart';
+import 'package:todo_app/data/Constants/size.dart';
 import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 import 'package:todo_app/widgets/Buttons/txt_btn.dart';
 

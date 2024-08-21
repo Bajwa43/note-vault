@@ -10,8 +10,8 @@ import 'package:todo_app/modules/home_module/controller/task_controller.dart';
 
 import '../data/app_assets.dart';
 import '../modules/home_module/components/on_focus_textFormFieldWidget.dart';
-import '../utiles/Constants/colors.dart';
-import '../utiles/Constants/size.dart';
+import '../data/Constants/colors.dart';
+import '../data/Constants/size.dart';
 import '../widgets/Buttons/icon_btn.dart';
 import '../widgets/Buttons/trigar_btn.dart';
 import '../widgets/txtWidget.dart';

@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:todo_app/modules/profile_mudule/profile_screen.dart';
-import 'package:todo_app/utiles/helpers/helper_functions.dart';
+import 'package:todo_app/data/helpers/helper_functions.dart';
 
 import '../../../data/app_assets.dart';
-import '../../../utiles/Constants/colors.dart';
-import '../../../utiles/Constants/size.dart';
+import '../../../data/Constants/colors.dart';
+import '../../../data/Constants/size.dart';
 import '../../../widgets/txtWidget.dart';
 
 class HomeAppBarWidget extends StatelessWidget {

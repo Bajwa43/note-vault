@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/modules/auth_module/Login/login_screen.dart';
 import 'package:todo_app/modules/auth_module/register/register_screnn.dart';
-import 'package:todo_app/utiles/Constants/colors.dart';
-import 'package:todo_app/utiles/Constants/size.dart';
-import 'package:todo_app/utiles/Constants/text_strings.dart';
-import 'package:todo_app/utiles/helpers/helper_functions.dart';
+import 'package:todo_app/data/Constants/colors.dart';
+import 'package:todo_app/data/Constants/size.dart';
+import 'package:todo_app/data/Constants/text_strings.dart';
+import 'package:todo_app/data/helpers/helper_functions.dart';
 
 import '../widgets/Buttons/trigar_btn.dart';
 import '../widgets/Buttons/topBackBtn.dart';

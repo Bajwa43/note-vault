@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../utiles/Constants/colors.dart';
-import '../../../utiles/Constants/size.dart';
+import '../../../data/Constants/colors.dart';
+import '../../../data/Constants/size.dart';
 
 class OnFocusTextFormFieldWidget extends StatelessWidget {
   const OnFocusTextFormFieldWidget(

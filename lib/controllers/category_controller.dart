@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:todo_app/utiles/helpers/firebase_helper/firebase_helper.dart';
+import 'package:todo_app/data/helpers/firebase_helper/firebase_helper.dart';
 import 'package:todo_app/models/Category_add_model/category_add_model.dart';
 
 class CategoryController extends GetxController {
@@ -24,3 +24,10 @@ class CategoryController extends GetxController {
     );
   }
 }
+
+
+//Auth --> Stream 
+//API --> Future (Forecfully Stream)
+//Time.perd --> 5-7 
+//API --> API_TOKEN ---> GET --> Server --> Return a Token , 
+//SEND THIS API_TOKEN --> POST --> 

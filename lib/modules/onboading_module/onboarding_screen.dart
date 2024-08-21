@@ -10,8 +10,8 @@ import 'package:get/route_manager.dart';
 import 'package:todo_app/modules/onboading_module/controller/pageIndex_for_scroll_controler.dart';
 import 'package:todo_app/models/onboading_model.dart';
 import 'package:todo_app/modules/start_screen.dart';
-import 'package:todo_app/utiles/Constants/size.dart';
-import 'package:todo_app/utiles/helpers/helper_functions.dart';
+import 'package:todo_app/data/Constants/size.dart';
+import 'package:todo_app/data/helpers/helper_functions.dart';
 
 import '../../widgets/Buttons/trigar_btn.dart';
 import '../../widgets/Buttons/topBackBtn.dart';

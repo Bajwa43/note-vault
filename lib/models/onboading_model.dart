@@ -1,5 +1,5 @@
 import 'package:todo_app/data/app_assets.dart';
-import 'package:todo_app/utiles/Constants/text_strings.dart';
+import 'package:todo_app/data/Constants/text_strings.dart';
 
 class OnboadingModel {
   String imagePath;

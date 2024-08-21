@@ -7,15 +7,20 @@ import 'package:todo_app/modules/home_module/components/local_buttom_navigation_
     as local;
 import 'package:todo_app/modules/home_module/home_screen.dart';
 import 'package:todo_app/modules/profile_mudule/profile_screen.dart';
-import 'package:todo_app/utiles/Constants/colors.dart';
-import 'package:todo_app/utiles/helpers/helper_functions.dart';
+import 'package:todo_app/data/Constants/colors.dart';
+import 'package:todo_app/data/helpers/helper_functions.dart';
 
 // int? indexGolobal;
 
 class HomeBottomNavbarWidget extends StatefulWidget {
   const HomeBottomNavbarWidget(
-      {super.key, required this.onPressed, required this.index});
-  final Function() onPressed;
+      {super.key,
+      required this.onPressed,
+      required this.index,
+      required this.onAddPressed});
+  final Function(int index) onPressed;
+  final Function() onAddPressed;
+
   final int index;
 
   @override
@@ -33,7 +38,7 @@ class _HomeBottomNavbarWidgetState extends State<HomeBottomNavbarWidget> {
   @override
   Widget build(BuildContext context) {
     return local.AnimatedBottomNavigationBar(
-      onPressedCenterBtn: widget.onPressed,
+      onPressedCenterBtn: widget.onAddPressed,
       barColor: Color(0xFF363636),
       controller: FloatingBottomBarController(initialIndex: 0),
       // Icons Decided
@@ -49,9 +54,11 @@ class _HomeBottomNavbarWidgetState extends State<HomeBottomNavbarWidget> {
           onTap: (value) {
             setState(() {
               // indexGolobal = value;
+              widget.onPressed(value);
             });
-            HelperFunctions.navigateToScreen(
-                context: context, screen: const HomeScreen());
+            // HelperFunctions.navigateToScreen(
+            //     context: context, screen: const HomeScreen());
+
             log('Index $value');
           },
         ),
@@ -70,9 +77,10 @@ class _HomeBottomNavbarWidgetState extends State<HomeBottomNavbarWidget> {
           onTap: (value) {
             setState(() {
               // indexGolobal = value;
+              widget.onPressed(value);
             });
-            HelperFunctions.navigateToScreen(
-                context: context, screen: const CalendarScreen());
+            // HelperFunctions.navigateToScreen(
+            //     context: context, screen: const CalendarScreen());
             log('Calender $value');
           },
         ),
@@ -90,9 +98,10 @@ class _HomeBottomNavbarWidgetState extends State<HomeBottomNavbarWidget> {
           onTap: (value) {
             setState(() {
               // indexGolobal = value;
+              widget.onPressed(value);
             });
-            HelperFunctions.navigateToScreen(
-                context: context, screen: const FocusScreen());
+            // HelperFunctions.navigateToScreen(
+            //     context: context, screen: const FocusScreen());
 
             log('Focus $value');
           },
@@ -109,11 +118,12 @@ class _HomeBottomNavbarWidgetState extends State<HomeBottomNavbarWidget> {
           titleStyle: const TextStyle(color: KColors.txtColor),
           dotColor: Colors.amber,
           onTap: (value) {
-            // setState(() {
-            //   index = value;
-            // });
-            HelperFunctions.navigateToScreen(
-                context: context, screen: const ProfileScreen());
+            setState(() {
+              // index = value;
+              widget.onPressed(value);
+            });
+            // HelperFunctions.navigateToScreen(
+            //     context: context, screen: const ProfileScreen());
 
             log('Profile $value');
           },

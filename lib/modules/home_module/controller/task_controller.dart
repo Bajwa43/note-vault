@@ -4,10 +4,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/utiles/helpers/firebase_helper/firebase_helper.dart';
+import 'package:todo_app/data/helpers/firebase_helper/firebase_helper.dart';
 import 'package:todo_app/models/HomeTaskModel/home_task_Model.dart';
-import 'package:todo_app/utiles/Constants/colors.dart';
-import 'package:todo_app/utiles/helpers/helper_functions.dart';
+import 'package:todo_app/data/Constants/colors.dart';
+import 'package:todo_app/data/helpers/helper_functions.dart';
 
 class TaskController extends GetxController {
   RxString id = ''.obs;

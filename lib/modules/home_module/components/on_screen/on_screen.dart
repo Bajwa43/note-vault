@@ -9,8 +9,8 @@ import 'package:todo_app/models/decided_teask_model.dart';
 import 'package:todo_app/modules/home_module/components/no_screen.dart';
 import 'package:todo_app/modules/home_module/components/on_screen/components/decided_task_card.dart';
 import 'package:todo_app/modules/home_module/controller/task_controller.dart';
-import 'package:todo_app/utiles/Constants/colors.dart';
-import 'package:todo_app/utiles/Constants/size.dart';
+import 'package:todo_app/data/Constants/colors.dart';
+import 'package:todo_app/data/Constants/size.dart';
 import 'package:todo_app/widgets/Buttons/combine_button.dart';
 import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 

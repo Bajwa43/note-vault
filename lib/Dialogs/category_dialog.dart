@@ -4,17 +4,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:todo_app/utiles/helpers/firebase_helper/firebase_helper.dart';
+import 'package:todo_app/data/helpers/firebase_helper/firebase_helper.dart';
 import 'package:todo_app/models/Category_add_model/category_add_model.dart';
 import 'package:todo_app/models/category_model.dart';
 import 'package:todo_app/models/task_priority_model.dart';
 import 'package:todo_app/modules/category_add_module/Caetgory_screen.dart';
 import 'package:todo_app/modules/category_add_module/controller/category_add_controler.dart';
-import 'package:todo_app/utiles/Constants/size.dart';
-import 'package:todo_app/utiles/helpers/helper_functions.dart';
+import 'package:todo_app/data/Constants/size.dart';
+import 'package:todo_app/data/helpers/helper_functions.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
 import '../modules/home_module/controller/task_controller.dart';
-import '../utiles/Constants/colors.dart';
+import '../data/Constants/colors.dart';
 
 // int checkedEditedIndex = 0;
 

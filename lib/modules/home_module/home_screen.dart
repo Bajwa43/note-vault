@@ -298,13 +298,16 @@ import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 import 'package:todo_app/Dialogs/task_priority_dialog.dart';
 import 'package:todo_app/data/app_assets.dart';
 import 'package:todo_app/models/HomeTaskModel/home_task_Model.dart';
+import 'package:todo_app/modules/Calendar_module/calendar_screen.dart';
 import 'package:todo_app/modules/category_add_module/controller/category_add_controler.dart';
+import 'package:todo_app/modules/focus_module/focus_screen.dart';
 import 'package:todo_app/modules/home_module/components/home_appbar.dart';
 import 'package:todo_app/modules/home_module/components/on_screen/on_screen.dart';
 import 'package:todo_app/modules/home_module/controller/task_controller.dart';
-import 'package:todo_app/utiles/Constants/colors.dart';
-import 'package:todo_app/utiles/Constants/size.dart';
-import 'package:todo_app/utiles/helpers/helper_functions.dart';
+import 'package:todo_app/modules/profile_mudule/profile_screen.dart';
+import 'package:todo_app/data/Constants/colors.dart';
+import 'package:todo_app/data/Constants/size.dart';
+import 'package:todo_app/data/helpers/helper_functions.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
 
 import '../../Dialogs/category_dialog.dart';
@@ -312,6 +315,7 @@ import '../../widgets/Buttons/icon_btn.dart';
 import '../../widgets/Buttons/trigar_btn.dart';
 import 'components/home_bottom_navbar.dart';
 import 'components/on_focus_textFormFieldWidget.dart';
+import 'screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -336,6 +340,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Color? _categoryBtnColor;
 
   Color? _priorityBtnColor;
+  int pageIndex = 0;
 
   @override
   void initState() {
@@ -394,16 +399,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: KColors.backGround,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(children: [
-            const HomeAppBarWidget(),
-            OnScreen(controller: searchbarCtrl)
-          ]),
-        ),
-      ),
-      bottomNavigationBar:
-          HomeBottomNavbarWidget(onPressed: showBottomSheet, index: 0),
+      body: listOfPage[pageIndex],
+      bottomNavigationBar: HomeBottomNavbarWidget(
+          onPressed: (index) {
+            pageIndex = index;
+            setState(() {});
+          },
+          onAddPressed: () {
+            showBottomSheet();
+          },
+          index: 0),
     );
   }
 
@@ -592,3 +597,5 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 }
+
+List listOfPage = [Screen(), CalendarScreen(), FocusScreen(), ProfileScreen()];

@@ -4,11 +4,11 @@ import 'package:get/get.dart';
 import 'package:todo_app/data/app_assets.dart';
 import 'package:todo_app/models/task_priority_model.dart';
 import 'package:todo_app/modules/home_module/controller/task_controller.dart';
-import 'package:todo_app/utiles/Constants/size.dart';
+import 'package:todo_app/data/Constants/size.dart';
 import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
 
-import '../utiles/Constants/colors.dart';
+import '../data/Constants/colors.dart';
 
 // int checkedIndex = 0;
 

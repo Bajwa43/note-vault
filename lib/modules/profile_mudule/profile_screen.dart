@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
 import 'package:todo_app/Dialogs/dialog.dart';
 import 'package:todo_app/data/app_assets.dart';
 import 'package:todo_app/models/completed_task.dart';
@@ -9,9 +11,9 @@ import 'package:todo_app/modules/home_module/components/home_bottom_navbar.dart'
 import 'package:todo_app/modules/home_module/components/on_focus_textFormFieldWidget.dart';
 import 'package:todo_app/modules/profile_mudule/components/profile_optional_widget.dart';
 import 'package:todo_app/modules/profile_mudule/page/setting_screen.dart';
-import 'package:todo_app/utiles/Constants/colors.dart';
-import 'package:todo_app/utiles/Constants/size.dart';
-import 'package:todo_app/utiles/helpers/helper_functions.dart';
+import 'package:todo_app/data/Constants/colors.dart';
+import 'package:todo_app/data/Constants/size.dart';
+import 'package:todo_app/data/helpers/helper_functions.dart';
 import 'package:todo_app/widgets/Buttons/negative_btn_withIcon_widget.dart';
 import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 import 'package:todo_app/widgets/Buttons/txt_btn.dart';
@@ -234,13 +236,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         KAppAssets.logOutImage,
                       ),
                     ),
-                    onPressed: () {}),
+                    onPressed: () async {
+                      await FirebaseAuth.instance.signOut();
+                      Get.back();
+                    }),
               ),
             ],
           ),
         )),
       ),
-      bottomNavigationBar: HomeBottomNavbarWidget(onPressed: () {}, index: 3),
+      // bottomNavigationBar: HomeBottomNavbarWidget(onPressed: () {}, index: 3),
     );
   }
 

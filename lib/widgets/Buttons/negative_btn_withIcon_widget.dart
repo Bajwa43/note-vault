@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 
-import '../../utiles/Constants/size.dart';
+import '../../data/Constants/size.dart';
 
 class NegativeBtnWithIconWidget extends StatelessWidget {
   const NegativeBtnWithIconWidget(

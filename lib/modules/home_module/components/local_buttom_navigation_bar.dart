@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:todo_app/utiles/Constants/colors.dart';
+import 'package:todo_app/data/Constants/colors.dart';
 import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 
 class AnimatedBottomNavigationBar extends StatefulWidget {
