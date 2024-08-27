@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/models/HomeTaskModel/home_task_Model.dart';
@@ -37,18 +38,22 @@ class CalendarController extends GetxController {
   void onInit() {
     _listOfInProgressTasks.bindStream(
         getTasks(status: TaskStatus.inprogress, dueDateTime: focusDate.value));
+
     _listOfCompletedTasks.bindStream(
         getTasks(status: TaskStatus.completed, dueDateTime: focusDate.value));
+
     super.onInit();
   }
 
   Stream<List<TaskModel>> getTasks(
       {required TaskStatus status, required DateTime dueDateTime}) {
-    log('At get TASK : ${dueDateTime.toString()}');
+    // log('At get TASK : ${dueDateTime.toString()}');
 
     DateTime dueDate =
         DateTime(dueDateTime.year, dueDateTime.month, dueDateTime.day);
-    return HelperFirebase.tasksFirestoreInstance
+    return HelperFirebase.userInstance
+        .doc('FirebaseAuth.instance.currentUser!.uid')
+        .collection('Tasks')
         .where('dueDate', isEqualTo: dueDate.millisecondsSinceEpoch)
         .where('status', isEqualTo: fromTaskStatus(status))
         // .orderBy('dueDate')
@@ -92,7 +97,9 @@ class CalendarController extends GetxController {
         DateTime(dueDateTime.year, dueDateTime.month, dueDateTime.day);
 
     List<TaskModel> takes = [];
-    var list = await HelperFirebase.tasksFirestoreInstance
+    var list = await HelperFirebase.userInstance
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Tasks')
         .where('dueDate', isEqualTo: dueDate.millisecondsSinceEpoch)
         .where('status', isEqualTo: fromTaskStatus(taskStatus))
         .get();

@@ -115,14 +115,17 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                     titleOfTask: 'Task Time:',
                     txtOfBtn: time,
                     onPressed: () async {
-                      DateTime? datetime = await showOmniDateTimePicker(
-                          context: context, theme: ThemeData.dark());
+                      DateTime? newDatetime = await showOmniDateTimePicker(
+                        initialDate: datetime,
+                        context: context,
+                        // theme: ThemeData.dark()
+                      );
 
-                      DateTime date = DateTime(
-                          datetime!.year, datetime.minute, datetime.day);
+                      DateTime date = DateTime(newDatetime!.year,
+                          newDatetime.minute, newDatetime.day);
 
                       tc.dueDate.value = date;
-                      tc.dueDateTime.value = datetime;
+                      tc.dueDateTime.value = newDatetime;
 
                       // tc.dueDate.value = datetime;
                       // tc.updateAt.value = datetime;
@@ -186,7 +189,7 @@ class _EditTaskScreenState extends State<EditTaskScreen> {
                         size: 24.sp,
                       ),
                       titleOfTask: 'Task Status:',
-                      txtOfBtn: tc.checkStatus.value
+                      txtOfBtn: tc.checkStatusForDisplay.value
                           ? fromTaskStatus(TaskStatus.completed)
                           : fromTaskStatus(TaskStatus.inprogress),
                       onPressed: () {});
@@ -353,7 +356,7 @@ Task title : Do math homework''',
                               KColors.inerTextFieldColor),
                           shape: const CircleBorder(),
                           // value: tc.taskStatus.value == TaskStatus.inprogress ? false: true ,
-                          value: tc.checkStatus.value,
+                          value: tc.checkStatusForDisplay.value,
                           onChanged: (value) {
                             tc.togalTaskStatus(value: value!);
                           });

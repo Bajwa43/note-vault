@@ -64,7 +64,7 @@ class OnScreen extends StatelessWidget {
                           text: 'Not Active Any Task At this Time',
                           textStyle: KAppTypoGraphy.dialogeText18Medium)
                       : ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: cont.listOfInProgressTask.length,
                           // itemCount: 1,

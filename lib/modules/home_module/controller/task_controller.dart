@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
@@ -27,7 +28,7 @@ class TaskController extends GetxController {
   RxInt priorityLevel = 1.obs;
   RxString categoryName = ''.obs;
   Rx<TaskStatus> taskStatus = TaskStatus.inprogress.obs;
-  RxBool checkStatus = false.obs;
+  RxBool checkStatusForDisplay = false.obs;
 
   // Category
   RxInt checkCategoryIndex = 0.obs;
@@ -37,17 +38,35 @@ class TaskController extends GetxController {
   RxBool check = false.obs;
 
   RxList<TaskModel> _listOfInProgressTasks = <TaskModel>[].obs;
-  List<TaskModel> get listOfInProgressTask => _listOfInProgressTasks.value;
+  List<TaskModel> get listOfInProgressTask => _listOfInProgressTasks;
 
   // COMPLETED LIST
   RxList<TaskModel> _listOfCompletedTasks = <TaskModel>[].obs;
-  List<TaskModel> get listOfCompletedTask => _listOfCompletedTasks.value;
+  List<TaskModel> get listOfCompletedTask => _listOfCompletedTasks;
+
+  // static User? user = FirebaseAuth.instance.currentUser;
+
+  Rx<User?> firebaseUser = Rx<User?>(FirebaseAuth.instance.currentUser);
 
   @override
   void onInit() {
-    _listOfInProgressTasks.bindStream(getTasks(status: TaskStatus.inprogress));
+    FirebaseAuth.instance.authStateChanges().listen((user) {
+      firebaseUser.value = user;
+      if (user != null) {
+        _listOfInProgressTasks
+            .bindStream(getTasks(status: TaskStatus.inprogress));
+        _listOfCompletedTasks
+            .bindStream(getTasks(status: TaskStatus.completed));
+      } else {
+        // Handle cases when the user is logged out
+        _listOfInProgressTasks.value = [];
+        _listOfCompletedTasks.value = [];
+      }
+    });
 
-    _listOfCompletedTasks.bindStream(getTasks(status: TaskStatus.completed));
+    // _listOfInProgressTasks.bindStream(getTasks(status: TaskStatus.inprogress));
+
+    // _listOfCompletedTasks.bindStream(getTasks(status: TaskStatus.completed));
 
     super.onInit();
   }
@@ -59,7 +78,7 @@ class TaskController extends GetxController {
       taskStatus.value = TaskStatus.inprogress;
     }
 
-    checkStatus.value = value;
+    checkStatusForDisplay.value = value;
   }
 
   resetControlle() {
@@ -68,11 +87,12 @@ class TaskController extends GetxController {
   }
 
   updateTask({required String docId}) async {
-    log(docId);
-    log(id.value);
+    // log(docId);
+    // log(id.value);
     var dueTime = DateTime(dueDate.value.hour, dueDate.value.minute);
 
     TaskModel model = TaskModel(
+        // log(id.value);
         id: id.value,
         title: title.value,
         description: description.value,
@@ -89,23 +109,35 @@ class TaskController extends GetxController {
         priorityLevel: priorityLevel.value,
         categoryName: categoryName.value,
         status: taskStatus.value);
-    await HelperFirebase.tasksFirestoreInstance
+
+    await HelperFirebase.userInstance
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Tasks')
         .doc(docId)
         .update(model.toMap())
         .then(
       (value) {
         HelperFunctions.showToast(title.value);
-        log(title.value);
+        // log(title.value);
       },
     );
   }
 
   deleteTask(String id) async {
-    await HelperFirebase.tasksFirestoreInstance.doc(id).delete();
+    // await HelperFirebase.tasksFirestoreInstance.doc(id).delete();
+    await HelperFirebase.userInstance
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Tasks')
+        .doc(id)
+        .delete();
   }
 
   Stream<List<TaskModel>> getTasks({required TaskStatus status}) {
-    return HelperFirebase.tasksFirestoreInstance
+    // HelperFirebase.userInstance.snapshots().map;
+
+    return HelperFirebase.userInstance
+        .doc(FirebaseAuth.instance.currentUser!.uid.toString())
+        .collection('Tasks')
         .where('status', isEqualTo: fromTaskStatus(status))
         .snapshots()
         .map(
@@ -123,8 +155,11 @@ class TaskController extends GetxController {
   }
 
   addNewTask(TaskModel model) async {
-    var docRef = FirebaseFirestore.instance.collection('Tasks').doc();
-
+    // var docRef = FirebaseFirestore.instance.collection('Tasks').doc();
+    var docRef = HelperFirebase.userInstance
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Tasks')
+        .doc(); //doc(id) >initilize on next Line
     // INITIALLIZING ID TO MODEL OBJECT
     model.id = docRef.id;
     await docRef.set(model.toMap());

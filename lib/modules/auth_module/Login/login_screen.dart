@@ -2,7 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:todo_app/data/app_assets.dart';
+import 'package:todo_app/models/HomeTaskModel/home_task_Model.dart';
+import 'package:todo_app/modules/auth_module/Login/pages/forget_password.dart';
 import 'package:todo_app/modules/auth_module/register/register_screnn.dart';
 import 'package:todo_app/modules/home_module/home_screen.dart';
 import 'package:todo_app/data/Constants/colors.dart';
@@ -16,6 +19,7 @@ import 'package:todo_app/widgets/txtFieldWidget.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
 
 import '../../../widgets/Buttons/topBackBtn.dart';
+import '../../home_module/controller/task_controller.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -29,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController passwordController;
   final _formKey = GlobalKey<FormState>();
   bool isPasswordShow = true;
+  var _tc = Get.find<TaskController>();
 
   @override
   void initState() {
@@ -47,10 +52,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (kDebugMode) {
-      emailController.text = "fahadali@gmail.com";
-      passwordController.text = "Fahad@11";
-    }
+    // if (kDebugMode) {
+    //   emailController.text = "fahadali@gmail.com";
+    //   passwordController.text = "Fahad@11";
+    // }
     return Scaffold(
       backgroundColor: KColors.backGround,
       body: SingleChildScrollView(
@@ -75,12 +80,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: 'UserName',
                 controller: emailController,
                 textInputType: TextInputType.emailAddress,
-                validation: (value) {
-                  if (!AppValidation.validateEmail(value!)) {
-                    return 'Invalid email address';
-                  }
-                  return null;
-                },
+                // validation: (value) {
+                //   if (!AppValidation.validateEmail(value!)) {
+                //     return 'Invalid email address';
+                //   }
+                //   return null;
+                // },
               ),
               TextWidget(
                 text: 'Password',
@@ -92,12 +97,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: '* * * * * * * * * *',
                 controller: passwordController,
                 obscureText: isPasswordShow,
-                validation: (value) {
-                  if (!AppValidation.validatePassword(value ?? '')) {
-                    return 'Password must be at least 8 characters long and contain uppercase, lowercase, numbers, and special characters.';
-                  }
-                  return null;
-                },
+                // validation: (value) {
+                //   if (!AppValidation.validatePassword(value ?? '')) {
+                //     return 'Password must be at least 8 characters long and contain uppercase, lowercase, numbers, and special characters.';
+                //   }
+                //   return null;
+                // },
                 // showIcon: true,
                 onPressedIcon: () {
                   if (isPasswordShow == true) {
@@ -109,16 +114,28 @@ class _LoginScreenState extends State<LoginScreen> {
                   setState(() {});
                 },
               ),
+              GestureDetector(
+                onTap: () {
+                  Get.to(ForgetPasswordScreen());
+                },
+                child: TextWidget(
+                  alignmentGeometry: Alignment.topRight,
+                  // padHori: 0,
+                  padVerti: 0,
+                  text: 'Forget password?',
+                  textStyle: KAppTypoGraphy.descriptionMedium,
+                ),
+              ),
               TrigareBtn(
                   heightOfBtn: 48.h,
                   padVerti: 20.w,
                   widthOfBtn: KAppTypoGraphy.trigarLargeBtnWidth,
                   btnName: 'LOGIN',
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      AuthService.loginWithEmailAndPassword(
-                          context, emailController, passwordController);
-                    }
+                  onPressed: () {
+                    // if (_formKey.currentState!.validate()) {
+                    AuthService.loginWithEmailAndPassword(
+                        context, emailController, passwordController);
+                    // }
                   }),
               Divider(
                 endIndent: 15.w,

@@ -24,7 +24,7 @@ class KAppAssets {
   static String flgImage = "assets/images/home/flag.svg";
 
   // Profile
-  static String profileImage = "assets/images/profile/fahad.jpeg";
+  static String profileImage = "assets/images/profile/profile.png";
   static String settingImage = "assets/images/profile/setting-2.svg";
   static String accountImage = "assets/images/profile/user.svg";
   static String keyImage = "assets/images/profile/key.svg";

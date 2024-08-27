@@ -1,13 +1,33 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:todo_app/data/Constants/colors.dart';
 import 'package:todo_app/data/Constants/size.dart';
+import 'package:todo_app/data/helpers/firebase_helper/firebase_helper.dart';
 import 'package:todo_app/data/helpers/helper_functions.dart';
+import 'package:todo_app/models/HomeTaskModel/home_task_Model.dart';
+import 'package:todo_app/models/user_model.dart/user_model.dart';
+import 'package:todo_app/services/auth_exception_handler.dart';
 
 class AuthService {
+  static late AuthStatus _status;
   //login with pass and email function
+
+  // FORGET PASSWORD
+  static Future forgetPasswordWithEmail(String email) async {
+    // FirebaseAuth.instance.confirmPasswordReset(code: code, newPassword: newPassword)
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    //  .then(
+    // (value) {
+    //   _status == AuthStatus.successful;
+    //   // Get.to();
+    // },
+    // );
+  }
 
   // LOGIN
 
@@ -19,7 +39,7 @@ class AuthService {
           isDismissible: false,
           scrollControlDisabledMaxHeightRatio: 10,
           sheetAnimationStyle: AnimationStyle(
-            duration: Duration(milliseconds: 600),
+            duration: const Duration(milliseconds: 600),
           ),
           constraints: BoxConstraints(
               maxHeight: MediaQuery.sizeOf(context).height,
@@ -28,7 +48,7 @@ class AuthService {
                 body: Center(
                   child: SizedBox(
                     height: MediaQuery.sizeOf(context).height * 1,
-                    child: Column(
+                    child: const Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         CircularProgressIndicator.adaptive(
@@ -46,16 +66,19 @@ class AuthService {
 
       Get.back();
       Get.back();
-    } catch (e) {
+    } on FirebaseAuthException catch (e) {
       Get.back();
-
-      HelperFunctions.showToast(e.toString());
+      AuthStatus status = AuthExceptionHandler.handleAuthException(e);
+      String error = AuthExceptionHandler.generateErrorMessage(status);
+      HelperFunctions.showToast(error);
     }
   }
 
 //  REGISTER
   static registerWithFirebaseAuth(
-      BuildContext context, var emailController, var passwordController) async {
+      BuildContext context,
+      TextEditingController emailController,
+      TextEditingController passwordController) async {
     try {
       showModalBottomSheet(
           context: context,
@@ -76,8 +99,37 @@ class AuthService {
               ));
       // Get.back();
 
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: emailController.text, password: passwordController.text);
+
+      // TaskModel(
+      //     id: '',
+      //     title: '',
+      //     description: '',
+      //     dueDate: DateTime.now(),
+      //     dueDateTime: DateTime.now(),
+      //     updateAt: DateTime.now(),
+      //     createdAt: DateTime.now(),
+      //     iconCodePoint: 0,
+      //     iconFontFamily: '',
+      //     iconColorA: 0,
+      //     iconColorB: 0,
+      //     iconColorG: 0,
+      //     iconColorR: 0,
+      //     priorityLevel: 0,
+      //     categoryName: '',
+      //     status: TaskStatus.inprogress);
+
+      UserModel userModel = UserModel(
+          userName: emailController.text.split('@').first, imagePath: '');
+      await HelperFirebase.userInstance
+          .doc(userCredential.user!.uid)
+          .set(userModel.toMap());
+
+      // .collection('Tasks');
+      // .doc();
+      // .set();
       Get.back();
       Get.back();
     } catch (e) {

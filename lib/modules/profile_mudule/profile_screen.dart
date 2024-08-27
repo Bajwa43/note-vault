@@ -4,11 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:todo_app/Dialogs/dialog.dart';
+import 'package:todo_app/controllers/profile_controller.dart';
 import 'package:todo_app/data/app_assets.dart';
+import 'package:todo_app/data/helpers/firebase_helper/firebase_helper.dart';
 import 'package:todo_app/models/completed_task.dart';
 import 'package:todo_app/models/decided_teask_model.dart';
 import 'package:todo_app/modules/home_module/components/home_bottom_navbar.dart';
 import 'package:todo_app/modules/home_module/components/on_focus_textFormFieldWidget.dart';
+import 'package:todo_app/modules/home_module/controller/task_controller.dart';
 import 'package:todo_app/modules/profile_mudule/components/profile_optional_widget.dart';
 import 'package:todo_app/modules/profile_mudule/page/setting_screen.dart';
 import 'package:todo_app/data/Constants/colors.dart';
@@ -19,6 +22,8 @@ import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 import 'package:todo_app/widgets/Buttons/txt_btn.dart';
 import 'package:todo_app/widgets/txtFieldWidget.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
+
+import '../../models/user_model.dart/user_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -31,6 +36,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late TextEditingController nameControler;
   late TextEditingController oldPasswordControler;
   late TextEditingController newPasswordControler;
+  final _tc = Get.find<TaskController>();
+  final _pc = Get.find<ProfileController>();
 
   @override
   void initState() {
@@ -61,21 +68,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
               TextWidget(
                   padVerti: 24,
                   text: 'Profile',
+                  // text: FirebaseAuth.instance.currentUser!.uid.toString(),
                   textStyle: KAppTypoGraphy.profileTitleStyle),
               Container(
                   // width: 85,
                   height: 85,
                   clipBehavior: Clip.hardEdge,
-                  decoration: BoxDecoration(shape: BoxShape.circle),
-                  child: Image.asset(KAppAssets.profileImage)),
+                  decoration: const BoxDecoration(shape: BoxShape.circle),
+                  child: _pc.userModel!.imagePath == ''
+                      ? Image.asset(KAppAssets.personImage)
+                      : Image.network(_pc.userModel!.imagePath)),
 
               TextWidget(
                   padHori: 0,
                   padVerti: 10,
-                  text: 'Fahad Ali',
+                  // text: FirebaseAuth.instance.currentUser!.email.toString(),
+                  text: _pc.userModel!.userName,
                   textStyle: KAppTypoGraphy.profileNameStyle),
 
-              // ........................BUTTONS
+              // ........................DISPLAY UPDATES
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,8 +97,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       // flatBtn: true,
                       btnColor: KColors.taskboxColor,
                       btnTextStyle: KAppTypoGraphy.profileOptionStyleAndBtnText,
-                      btnName:
-                          '${DecidedTaskModel.listOfDecidedTask.length.toString()} Task left',
+                      btnName: '${_tc.listOfInProgressTask.length} Task left',
+                      // '${DecidedTaskModel.listOfDecidedTask.length.toString()} Task left',
                       onPressed: () {}),
                   TrigareBtn(
                       // padVerti: 0,
@@ -95,8 +106,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       widthOfBtn: 153.w,
                       heightOfBtn: 58.h,
                       btnTextStyle: KAppTypoGraphy.profileOptionStyleAndBtnText,
-                      btnName:
-                          '${CompletedTaskModel.listOFCompletedTask.length.toString()} Task done',
+                      btnName: '${_tc.listOfCompletedTask.length} Task done',
+                      // '${CompletedTaskModel.listOFCompletedTask.length.toString()} Task done',
                       onPressed: () {}),
                 ],
               ),
@@ -139,7 +150,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             onCanceled: () {
                               HelperFunctions.popBack(context: context);
                             },
-                            onPressed: () {},
+                            onPressed: () async {
+                              await HelperFirebase.userInstance
+                                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                                  .update({
+                                'userName': nameControler.text
+                              }).then((value) => HelperFunctions.showToast(
+                                      'Name is Updated!'));
+                            },
                             trigarBtnName: 'Edit',
                             heightOfDialog: 200.h,
                             widget: OnFocusTextFormFieldWidget(

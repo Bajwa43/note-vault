@@ -296,6 +296,7 @@ import 'package:intl/intl.dart';
 import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 import 'package:todo_app/Dialogs/task_priority_dialog.dart';
+import 'package:todo_app/controllers/profile_controller.dart';
 import 'package:todo_app/data/app_assets.dart';
 import 'package:todo_app/models/HomeTaskModel/home_task_Model.dart';
 import 'package:todo_app/modules/Calendar_module/calendar_screen.dart';
@@ -333,6 +334,8 @@ class _HomeScreenState extends State<HomeScreen> {
   bool onDescriptionFocus = false;
   FocusNode focusNode = FocusNode();
   FocusNode focusNode1 = FocusNode();
+  final pc = Get.put(ProfileController());
+
   final TaskController tc = Get.find<TaskController>();
 
   Color? _dateBtnColor;
@@ -370,7 +373,14 @@ class _HomeScreenState extends State<HomeScreen> {
   _getDateTime() async {
     try {
       DateTime? datetime = await showOmniDateTimePicker(
-          context: context, theme: ThemeData.dark());
+          // barrierColor: Colors.amber,
+          // firstDate: DateTime(2024, 07, 10, 5, 30, 0, 0, 0),
+          initialDate: tc.dueDateTime.value,
+          // barrierDismissible: true,
+          // type: OmniDateTimePickerType.time,
+          context: context,
+          // theme: ThemeData.dark(),
+          theme: ThemeData.light());
 
       // var time = tc.dueDateTime.value;
       // DateFormat df = DateFormat.jm();
@@ -575,6 +585,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                   _categoryBtnColor = null;
                                   _dateBtnColor = null;
                                   _priorityBtnColor = null;
+                                  // Controler DataMember is Reset
+                                  tc.dueDate.value = DateTime.now();
+                                  tc.dueDateTime.value = DateTime.now();
+
                                   Get.back();
                                   HelperFunctions.showToast(
                                       'Task is Added SuccessFully!');

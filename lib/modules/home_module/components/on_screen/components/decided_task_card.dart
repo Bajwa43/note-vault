@@ -58,6 +58,7 @@ class TaskCardWidget extends StatelessWidget {
           tc.title.value = taskModel.title;
           tc.description.value = taskModel.description;
           tc.dueDate.value = taskModel.dueDate;
+          tc.dueDateTime.value = taskModel.dueDateTime;
           tc.categoryName.value = taskModel.categoryName;
           tc.iconCodePoint.value = taskModel.iconCodePoint;
           tc.iconFontFamily.value = taskModel.iconFontFamily;
@@ -67,11 +68,14 @@ class TaskCardWidget extends StatelessWidget {
           tc.iconColorR.value = taskModel.iconColorR;
           tc.priorityLevel.value = taskModel.priorityLevel;
           tc.id.value = taskModel.id;
-          tc.checkStatus.value =
+          tc.taskStatus.value = taskModel.status;
+          tc.checkStatusForDisplay.value =
               taskModel.status == TaskStatus.completed ? true : false;
 
-          HelperFunctions.navigateToScreen(
-              context: context, screen: const EditTaskScreen());
+          // HelperFunctions.navigateToScreen(
+          //     context: context, screen: const EditTaskScreen());
+
+          Get.to(const EditTaskScreen());
         },
         child: Container(
             width: 327.w,
