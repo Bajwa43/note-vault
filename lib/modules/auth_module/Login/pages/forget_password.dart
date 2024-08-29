@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:todo_app/data/Constants/size.dart';
 import 'package:todo_app/services/auth_service.dart';
 import 'package:todo_app/utiles/app_validation.dart';
@@ -37,7 +38,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     return Scaffold(
       body: Column(
         children: [
-          TopLeftBtn(onPressed: () {}),
+          TopLeftBtn(onPressed: () {
+            Get.back();
+          }),
           TextWidget(
               padVerti: 18.h,
               alignmentGeometry: Alignment.topLeft,
@@ -74,7 +77,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               btnName: 'Reset Password',
               onPressed: () async {
                 await AuthService.forgetPasswordWithEmail(
-                    _emailController.text.trim());
+                    _emailController.text.trim(), context);
               })
         ],
       ),

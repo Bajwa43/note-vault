@@ -21,4 +21,24 @@ class HelperFunctions {
         textColor: Colors.white,
         fontSize: 16.0);
   }
+
+  static showBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        constraints: BoxConstraints(
+            maxHeight: MediaQuery.sizeOf(context).height,
+            maxWidth: MediaQuery.sizeOf(context).width),
+        builder: (context) => const Scaffold(
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator.adaptive(
+                      valueColor: AlwaysStoppedAnimation(Colors.amberAccent),
+                    ),
+                  ],
+                ),
+              ),
+            ));
+  }
 }

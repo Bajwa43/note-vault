@@ -334,9 +334,9 @@ class _HomeScreenState extends State<HomeScreen> {
   bool onDescriptionFocus = false;
   FocusNode focusNode = FocusNode();
   FocusNode focusNode1 = FocusNode();
-  final pc = Get.put(ProfileController());
 
-  final TaskController tc = Get.find<TaskController>();
+  final TaskController _tc = Get.find<TaskController>();
+  final ProfileController _pc = Get.find<ProfileController>();
 
   Color? _dateBtnColor;
 
@@ -353,6 +353,7 @@ class _HomeScreenState extends State<HomeScreen> {
     descriptionCtrl = TextEditingController();
     searchbarCtrl = TextEditingController();
     onTaskFocus = true;
+    _pc.getUserDate();
 
     // focusNode.requestFocus();
     // focusNode.addListener(() {
@@ -370,12 +371,29 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: KColors.backGround,
+      body: SafeArea(child: listOfPage[pageIndex]),
+      bottomNavigationBar: HomeBottomNavbarWidget(
+          onPressed: (index) {
+            pageIndex = index;
+            setState(() {});
+          },
+          onAddPressed: () {
+            showBottomSheet();
+          },
+          index: 0),
+    );
+  }
+
   _getDateTime() async {
     try {
       DateTime? datetime = await showOmniDateTimePicker(
           // barrierColor: Colors.amber,
           // firstDate: DateTime(2024, 07, 10, 5, 30, 0, 0, 0),
-          initialDate: tc.dueDateTime.value,
+          initialDate: _tc.dueDateTime.value,
           // barrierDismissible: true,
           // type: OmniDateTimePickerType.time,
           context: context,
@@ -388,9 +406,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
       if (datetime != null) {
         DateTime date = DateTime(datetime.year, datetime.month, datetime.day);
-        tc.dueDate.value = date;
+        _tc.dueDate.value = date;
         _dateBtnColor = KColors.btn;
-        tc.dueDateTime.value = datetime;
+        _tc.dueDateTime.value = datetime;
       } else {
         Fluttertoast.showToast(msg: 'DateTime is not Selected');
       }
@@ -400,26 +418,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   _selectCategory() {
-    _categoryBtnColor = Color.fromARGB(tc.iconColorA.value, tc.iconColorR.value,
-        tc.iconColorG.value, tc.iconColorB.value);
+    _categoryBtnColor = Color.fromARGB(_tc.iconColorA.value,
+        _tc.iconColorR.value, _tc.iconColorG.value, _tc.iconColorB.value);
     Get.back();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: KColors.backGround,
-      body: listOfPage[pageIndex],
-      bottomNavigationBar: HomeBottomNavbarWidget(
-          onPressed: (index) {
-            pageIndex = index;
-            setState(() {});
-          },
-          onAddPressed: () {
-            showBottomSheet();
-          },
-          index: 0),
-    );
   }
 
   showBottomSheet() {
@@ -525,7 +526,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                           Get.back();
                                         },
                                         onPressed: (level) {
-                                          tc.priorityLevel.value = level;
+                                          _tc.priorityLevel.value = level;
                                           Fluttertoast.showToast(
                                               msg: 'Selected: $level');
                                           HelperFunctions.popBack(
@@ -561,21 +562,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                       id: '',
                                       title: taskCtrl.text,
                                       description: descriptionCtrl.text,
-                                      dueDate: tc.dueDate.value,
-                                      dueDateTime: tc.dueDateTime.value,
+                                      dueDate: _tc.dueDate.value,
+                                      dueDateTime: _tc.dueDateTime.value,
                                       createdAt: DateTime.now(),
                                       updateAt: DateTime.now(),
-                                      iconCodePoint: tc.iconCodePoint.value,
-                                      iconFontFamily: tc.iconFontFamily.value,
-                                      iconColorA: tc.iconColorA.value,
-                                      iconColorB: tc.iconColorB.value,
-                                      iconColorG: tc.iconColorG.value,
-                                      iconColorR: tc.iconColorR.value,
-                                      priorityLevel: tc.priorityLevel.value,
+                                      iconCodePoint: _tc.iconCodePoint.value,
+                                      iconFontFamily: _tc.iconFontFamily.value,
+                                      iconColorA: _tc.iconColorA.value,
+                                      iconColorB: _tc.iconColorB.value,
+                                      iconColorG: _tc.iconColorG.value,
+                                      iconColorR: _tc.iconColorR.value,
+                                      priorityLevel: _tc.priorityLevel.value,
                                       status: TaskStatus.inprogress,
-                                      categoryName: tc.categoryName.value);
+                                      categoryName: _tc.categoryName.value);
 
-                                  tc.addNewTask(model);
+                                  _tc.addNewTask(model);
                                   // tc.checkCategoryIndex.refresh();
                                   // tc.checkPriorityIndex.refresh();
                                   // tc.priorityLevel.refresh();
@@ -586,8 +587,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   _dateBtnColor = null;
                                   _priorityBtnColor = null;
                                   // Controler DataMember is Reset
-                                  tc.dueDate.value = DateTime.now();
-                                  tc.dueDateTime.value = DateTime.now();
+                                  _tc.dueDate.value = DateTime.now();
+                                  _tc.dueDateTime.value = DateTime.now();
 
                                   Get.back();
                                   HelperFunctions.showToast(

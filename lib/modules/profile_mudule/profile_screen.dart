@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:todo_app/Dialogs/dialog.dart';
 import 'package:todo_app/controllers/profile_controller.dart';
 import 'package:todo_app/data/app_assets.dart';
@@ -70,21 +71,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   text: 'Profile',
                   // text: FirebaseAuth.instance.currentUser!.uid.toString(),
                   textStyle: KAppTypoGraphy.profileTitleStyle),
-              Container(
-                  // width: 85,
-                  height: 85,
+              Obx(() => Container(
+                  // width: 350,
+                  height: 100.h,
                   clipBehavior: Clip.hardEdge,
                   decoration: const BoxDecoration(shape: BoxShape.circle),
-                  child: _pc.userModel!.imagePath == ''
+                  child: _pc.userModel.value!.imagePath == ''
                       ? Image.asset(KAppAssets.personImage)
-                      : Image.network(_pc.userModel!.imagePath)),
+                      : Image.network(_pc.userModel.value!.imagePath))),
 
-              TextWidget(
-                  padHori: 0,
-                  padVerti: 10,
-                  // text: FirebaseAuth.instance.currentUser!.email.toString(),
-                  text: _pc.userModel!.userName,
-                  textStyle: KAppTypoGraphy.profileNameStyle),
+              Obx(() {
+                return TextWidget(
+                    padHori: 0,
+                    padVerti: 10,
+                    // text: FirebaseAuth.instance.currentUser!.email.toString(),
+                    text: _pc.userModel.value!.userName,
+                    textStyle: KAppTypoGraphy.profileNameStyle);
+              }),
 
               // ........................DISPLAY UPDATES
 
@@ -151,12 +154,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               HelperFunctions.popBack(context: context);
                             },
                             onPressed: () async {
-                              await HelperFirebase.userInstance
-                                  .doc(FirebaseAuth.instance.currentUser!.uid)
-                                  .update({
-                                'userName': nameControler.text
-                              }).then((value) => HelperFunctions.showToast(
-                                      'Name is Updated!'));
+                              await _pc.editName(nameControler, context);
+                              _pc.getUserDate();
+
+                              // setState(() {});
                             },
                             trigarBtnName: 'Edit',
                             heightOfDialog: 200.h,
@@ -207,11 +208,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   );
                 },
               ),
+              //
               ProfileOptionalWidget(
                 iconImage: SvgPicture.asset(KAppAssets.cameraImage),
                 titleOfTask: 'Change account image',
-                onPressed: () {
-                  changeAccountBottomSheet(context);
+                onPressed: () async {
+                  await changeAccountBottomSheet(context);
+                  _pc.getUserDate();
                 },
               ),
               // ............
@@ -256,6 +259,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     onPressed: () async {
                       await FirebaseAuth.instance.signOut();
+                      _pc.userModel.value =
+                          UserModel(imagePath: '', userName: '');
                       Get.back();
                     }),
               ),
@@ -301,16 +306,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
 
                   TextButtonWidget(
-                      onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                content: Text('Task Picher Clicked')));
+                      onTap: () async {
+                        await _pc.pickImage(
+                            source: ImageSource.camera, context: context);
                       },
                       nameOfBtn: 'Tack picture',
                       padding: EdgeInsets.all(5),
                       btnStyle: KAppTypoGraphy.description2Medium),
                   TextButtonWidget(
-                      onTap: () {},
+                      onTap: () async {
+                        await _pc.pickImage(
+                            source: ImageSource.gallery, context: context);
+                      },
                       nameOfBtn: 'Import from gallery',
                       padding: EdgeInsets.all(5),
                       btnStyle: KAppTypoGraphy.description2Medium),

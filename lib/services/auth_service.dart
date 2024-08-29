@@ -2,9 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:todo_app/Dialogs/dialog.dart';
+import 'package:todo_app/Dialogs/inform_dialog.dart';
 import 'package:todo_app/data/Constants/colors.dart';
 import 'package:todo_app/data/Constants/size.dart';
 import 'package:todo_app/data/helpers/firebase_helper/firebase_helper.dart';
@@ -12,15 +15,41 @@ import 'package:todo_app/data/helpers/helper_functions.dart';
 import 'package:todo_app/models/HomeTaskModel/home_task_Model.dart';
 import 'package:todo_app/models/user_model.dart/user_model.dart';
 import 'package:todo_app/services/auth_exception_handler.dart';
+import 'package:todo_app/widgets/txtWidget.dart';
 
 class AuthService {
-  static late AuthStatus _status;
+  // static late AuthStatus _status;
   //login with pass and email function
 
   // FORGET PASSWORD
-  static Future forgetPasswordWithEmail(String email) async {
+  static Future forgetPasswordWithEmail(
+      String email, BuildContext context) async {
     // FirebaseAuth.instance.confirmPasswordReset(code: code, newPassword: newPassword)
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email).then(
+      (value) {
+        showDialog(
+            context: context,
+            builder: (context) => Dialog(
+                  child: InformDialogWidget(
+                    heightOfDialog: 200.h,
+                    trigarBtnName: 'Ok',
+                    dialogTitle: 'Email Conformation!',
+                    onPressed: () {
+                      Get.back();
+                      Get.back();
+                    },
+                    child: TextWidget(
+                      padHori: 0,
+                      padVerti: 0,
+                      text: 'Message send your Email box! If it is Exist.',
+                      textStyle: KAppTypoGraphy.dialogeText18Medium,
+                      textAlign: TextAlign.center,
+                    ),
+                    //
+                  ),
+                ));
+      },
+    );
     //  .then(
     // (value) {
     //   _status == AuthStatus.successful;

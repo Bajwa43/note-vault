@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:todo_app/controllers/profile_controller.dart';
 import 'package:todo_app/modules/profile_mudule/profile_screen.dart';
 import 'package:todo_app/data/helpers/helper_functions.dart';
 
@@ -11,7 +13,8 @@ import '../../../data/Constants/size.dart';
 import '../../../widgets/txtWidget.dart';
 
 class HomeAppBarWidget extends StatelessWidget {
-  const HomeAppBarWidget({super.key});
+  HomeAppBarWidget({super.key});
+  final ProfileController _pc = Get.find<ProfileController>();
 
   @override
   Widget build(BuildContext context) {
@@ -36,22 +39,22 @@ class HomeAppBarWidget extends StatelessWidget {
                 padVerti: 0,
                 textStyle: KAppTypoGraphy.displayTitleMedium),
             InkWell(
-              borderRadius: BorderRadius.circular(15),
-              onTap: () {
-                HelperFunctions.navigateToScreen(
-                    context: context, screen: ProfileScreen());
-              },
-              child: Container(
-                  clipBehavior: Clip.hardEdge,
+                borderRadius: BorderRadius.circular(30),
+                onTap: () {
+                  Get.to(ProfileScreen());
+                },
+                child: Container(
+                  clipBehavior: Clip.antiAlias,
                   width: 42.w,
-                  // height: 42.h,
-                  decoration: BoxDecoration(shape: BoxShape.circle),
-                  child: Image.asset(
-                    KAppAssets.personImage,
-                    // width: 42.w,
-                    fit: BoxFit.fill,
-                  )),
-            ),
+                  // height: 50.h,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white,
+                  ),
+                  child: _pc.userModel.value!.imagePath == ''
+                      ? Image.asset(KAppAssets.personImage)
+                      : Image.network(_pc.userModel.value!.imagePath),
+                )),
           ],
         ),
       ),

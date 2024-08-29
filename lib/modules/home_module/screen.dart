@@ -25,7 +25,7 @@ class _ScreenState extends State<Screen> {
     return SafeArea(
       child: SingleChildScrollView(
         child: Column(children: [
-          const HomeAppBarWidget(),
+          HomeAppBarWidget(),
           OnScreen(controller: searchbarCtrl)
         ]),
       ),

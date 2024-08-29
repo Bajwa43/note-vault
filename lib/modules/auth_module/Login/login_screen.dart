@@ -18,6 +18,7 @@ import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 import 'package:todo_app/widgets/txtFieldWidget.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
 
+import '../../../controllers/profile_controller.dart';
 import '../../../widgets/Buttons/topBackBtn.dart';
 import '../../home_module/controller/task_controller.dart';
 
@@ -34,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   bool isPasswordShow = true;
   var _tc = Get.find<TaskController>();
+  final _pc = Get.find<ProfileController>();
 
   @override
   void initState() {
@@ -80,12 +82,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: 'UserName',
                 controller: emailController,
                 textInputType: TextInputType.emailAddress,
-                // validation: (value) {
-                //   if (!AppValidation.validateEmail(value!)) {
-                //     return 'Invalid email address';
-                //   }
-                //   return null;
-                // },
+                validation: (value) {
+                  // if (!AppValidation.validateEmail(value!)) {
+                  if (value!.trim() == '') {
+                    return 'Enter email address';
+                  }
+                  return null;
+                },
               ),
               TextWidget(
                 text: 'Password',
@@ -97,12 +100,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 hintText: '* * * * * * * * * *',
                 controller: passwordController,
                 obscureText: isPasswordShow,
-                // validation: (value) {
-                //   if (!AppValidation.validatePassword(value ?? '')) {
-                //     return 'Password must be at least 8 characters long and contain uppercase, lowercase, numbers, and special characters.';
-                //   }
-                //   return null;
-                // },
+                validation: (value) {
+                  // if (!AppValidation.validatePassword(value ?? '')) {
+                  if (value!.trim() == '') {
+                    return 'Enter Password';
+                  }
+                  return null;
+                },
                 // showIcon: true,
                 onPressedIcon: () {
                   if (isPasswordShow == true) {
@@ -132,10 +136,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   widthOfBtn: KAppTypoGraphy.trigarLargeBtnWidth,
                   btnName: 'LOGIN',
                   onPressed: () {
-                    // if (_formKey.currentState!.validate()) {
-                    AuthService.loginWithEmailAndPassword(
-                        context, emailController, passwordController);
-                    // }
+                    if (_formKey.currentState!.validate()) {
+                      _pc.getUserDate();
+
+                      AuthService.loginWithEmailAndPassword(
+                          context, emailController, passwordController);
+                    }
                   }),
               Divider(
                 endIndent: 15.w,

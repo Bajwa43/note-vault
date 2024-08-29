@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:todo_app/controllers/profile_controller.dart';
 import 'package:todo_app/modules/Calendar_module/controller/calendar_controller.dart';
 import 'package:todo_app/modules/auth_module/Login/login_screen.dart';
 import 'package:todo_app/modules/auth_module/auth_wrapper.dart';
@@ -61,6 +62,11 @@ class MyApp extends StatelessWidget {
   final CategoryAddControler categoryAddControler =
       Get.put(CategoryAddControler());
   final CalendarController calendarController = Get.put(CalendarController());
+  final _pc = Get.lazyPut(
+    () => ProfileController(),
+  );
+
+  // final ProfileController _pc = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
