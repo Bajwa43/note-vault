@@ -16,6 +16,7 @@ import 'package:todo_app/widgets/Buttons/trigar_btn.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
 import 'package:workmanager/workmanager.dart';
 import 'components/time_countdown_widget.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class FocusScreen extends StatefulWidget {
   const FocusScreen({super.key});
@@ -39,6 +40,13 @@ class _FocusScreenState extends State<FocusScreen> {
   bool hasPause = false;
   String btnName = 'Start Focusing';
   FlutterSound flutterSound = FlutterSound();
+  AudioPlayer audioPlayer = AudioPlayer();
+
+  void playAlarm() async {
+    // Load and play an alarm sound (replace with your own sound or music URL)
+    await audioPlayer.play(UrlSource(
+        "https://www.soundjay.com/button/sounds/beep-07.mp3")); // Example beep sound URL
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +78,8 @@ class _FocusScreenState extends State<FocusScreen> {
 // });
 
                   setState(() {
+                    playAlarm();
+
                     hasStarted = false;
                   });
                 },

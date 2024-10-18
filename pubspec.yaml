@@ -65,6 +65,8 @@ dependencies:
   flutter_sound: ^9.11.2
   image_picker: ^1.1.2
   flutter_custom_carousel: ^0.1.0+1
+  flutter_iconpicker: ^3.3.3
+  # icon_picker: ^2.1.0
 
 
 dev_dependencies:

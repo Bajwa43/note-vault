@@ -69,13 +69,14 @@ class _CategoryDialogState extends State<CategoryDialog> {
                   init: CategoryAddControler(),
                   builder: (controller) {
                     if (controller.listOfCategories.isEmpty) {
-                      return Text("No Category");
+                      return const Text("No Category");
                     }
                     return GridView.builder(
                       shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       itemCount: controller.listOfCategories.length,
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 3,
                       ),
                       itemBuilder: (context, index) {
@@ -106,7 +107,8 @@ class _CategoryDialogState extends State<CategoryDialog> {
             cc.checkedEditedIndex.value = index;
           });
           if (index == cc.listOfCategories.length - 1) {
-            Get.toNamed('/Category');
+            // Get.toNamed('/Category');
+            Get.to(const CategoryScreen());
           }
         });
 

@@ -3,8 +3,13 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_iconpicker/Models/configuration.dart';
+import 'package:flutter_iconpicker/Models/icon_pack.dart';
+import 'package:flutter_iconpicker/Models/icon_picker_icon.dart';
+import 'package:flutter_iconpicker/flutter_iconpicker.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+// import 'package:icon_picker/icon_picker.dart';
 import 'package:todo_app/data/helpers/firebase_helper/firebase_helper.dart';
 import 'package:todo_app/models/Category_add_model/category_add_model.dart';
 
@@ -55,9 +60,37 @@ class _CategoryScreenState extends State<CategoryScreen> {
 
   CategoryAddControler cc = Get.find<CategoryAddControler>();
 
+  Icon? _icon;
+
+  _pickIcon() async {
+    IconPickerIcon? icon = await showIconPicker(
+      context,
+      configuration: SinglePickerConfiguration(
+        // preSelected: Provider.of<IconNotifier>(context, listen: false).icon,
+        // adaptiveDialog: isAdaptive,
+        // showTooltips: showTooltips,
+        // showSearchBar: showSearch,
+        iconPickerShape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        // iconPackModes: IconNotifier.starterPacks,
+        searchComparator: (String search, IconPickerIcon icon) =>
+            search
+                .toLowerCase()
+                .contains(icon.name.replaceAll('_', ' ').toLowerCase()) ||
+            icon.name.toLowerCase().contains(search.toLowerCase()),
+      ),
+    );
+
+    _icon = Icon(icon?.data);
+    setState(() {});
+
+    debugPrint('Picked Icon:  $icon');
+  }
+
   @override
   Widget build(BuildContext context) {
     log('reBuild');
+
     return Scaffold(
       backgroundColor: KColors.backGround,
       body: SafeArea(
@@ -93,14 +126,16 @@ class _CategoryScreenState extends State<CategoryScreen> {
           ),
 
           IconBtnWidget(
-              widget: Icon(IconData(984246, fontFamily: 'MaterialIcons')),
+              widget: const Icon(IconData(984246, fontFamily: 'MaterialIcons')),
               onTap: () {
-                log(Icons.work.codePoint.toString());
-                log(Icons.work.fontFamily.toString());
+                // log(Icons.work.codePoint.toString());
+                // log(Icons.work.fontFamily.toString());
                 // log(Icon(IconData()))
                 // HelperFirebase.firestoreInstance
                 ct.codePoint.value = Icons.add.codePoint;
                 ct.fontFamilty.value = Icons.add.fontFamily.toString();
+
+                _pickIcon();
               }),
           TextWidget(
             text: 'Category color:',
@@ -114,8 +149,6 @@ class _CategoryScreenState extends State<CategoryScreen> {
             child: Align(
                 alignment: Alignment.centerLeft,
                 child: Obx(() {
-                  log('reBuild2');
-
                   return TrigareBtn(
                     widthOfBtn: 100.w,
                     heightOfBtn: 48.h,
@@ -172,6 +205,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                             iconColorR: ct.colorR.value,
                             categoryName: categoryControler.text);
                         cc.addCatagory(obj);
+                        Get.back();
                         Get.snackbar('SuccesFuly', 'Category Added');
                       }
 
