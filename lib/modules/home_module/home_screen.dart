@@ -536,6 +536,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ));
                             },
                           ),
+
+                          // SAVE TASK BTN
                           const Expanded(child: SizedBox()),
                           IconBtnWidget(
                             padRight: 0,
@@ -590,13 +592,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                   _tc.dueDate.value = DateTime.now();
                                   _tc.dueDateTime.value = DateTime.now();
 
-                                  Get.back();
+                                  // Get.back();
                                   HelperFunctions.showToast(
                                       'Task is Added SuccessFully!');
                                 } catch (e) {
                                   HelperFunctions.showToast(
                                       'ERROR occue while Add Task!');
-                                  log(e.toString());
+                                  // log(e.toString());
                                 }
                               }
                             },

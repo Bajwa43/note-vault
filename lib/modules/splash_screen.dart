@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(Duration(seconds: 3), () {
       HelperFunctions.navigateToScreen(
-          context: context, screen: OnBoardingScreen());
+          context: context, screen: const OnBoardingScreen());
     });
   }
 

@@ -14,6 +14,7 @@ import 'package:todo_app/data/helpers/firebase_helper/firebase_helper.dart';
 import 'package:todo_app/data/helpers/helper_functions.dart';
 import 'package:todo_app/models/HomeTaskModel/home_task_Model.dart';
 import 'package:todo_app/models/user_model.dart/user_model.dart';
+import 'package:todo_app/modules/home_module/home_screen.dart';
 import 'package:todo_app/services/auth_exception_handler.dart';
 import 'package:todo_app/widgets/txtWidget.dart';
 
@@ -94,7 +95,8 @@ class AuthService {
           email: emailController.text, password: passwordController.text);
 
       Get.back();
-      Get.back();
+      // Get.back();
+      Get.to(const HomeScreen());
     } on FirebaseAuthException catch (e) {
       Get.back();
       AuthStatus status = AuthExceptionHandler.handleAuthException(e);

@@ -12,7 +12,7 @@ import 'package:todo_app/models/onboading_model.dart';
 import 'package:todo_app/modules/start_screen.dart';
 import 'package:todo_app/data/Constants/size.dart';
 import 'package:todo_app/data/helpers/helper_functions.dart';
-
+import 'package:flutter_custom_carousel/flutter_custom_carousel.dart';
 import '../../widgets/Buttons/trigar_btn.dart';
 import '../../widgets/Buttons/topBackBtn.dart';
 import 'components/carousel_slider_image.dart';
@@ -31,22 +31,21 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   // late CarouselController carouselTextController;
   late CarouselController carouselImageController;
   late PageController textPageControler;
+  late PageController imagePageControler;
   int pageIndex = 0;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     // carouselTextController = CarouselController();
     carouselImageController = CarouselController();
     textPageControler = PageController(initialPage: 0, keepPage: true);
+    imagePageControler = PageController(initialPage: 0, keepPage: true);
   }
 
   @override
   Widget build(BuildContext context) {
-    log('Rebuild');
     return Scaffold(
-      // backgroundColor: Colors.black,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -55,6 +54,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             height: 10.h,
           ),
           // carouselSliderImages(),
+          newCarousel(),
           _carouselIndicator(),
           SizedBox(
             height: 50.h,
@@ -66,14 +66,30 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     );
   }
 
-  CarouselImageWidget carouselSliderImages() {
-    return CarouselImageWidget(
-      carouselController: carouselImageController,
-      onselect: (selectedPageIndex) {
-        setState(() {
-          pageIndex = selectedPageIndex;
-        });
-      },
+  Widget newCarousel() {
+    return Expanded(
+      child: PageView.builder(
+        physics: const NeverScrollableScrollPhysics(),
+        controller: imagePageControler,
+        itemCount: OnboadingModel.listOfOnboarding.length,
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (context, index) {
+          return Image.asset(OnboadingModel.listOfOnboarding[index].imagePath);
+        },
+      ),
+    );
+  }
+
+  Expanded carouselSliderImages() {
+    return Expanded(
+      child: CarouselImageWidget(
+        carouselController: carouselImageController,
+        onselect: (selectedPageIndex) {
+          setState(() {
+            pageIndex = selectedPageIndex;
+          });
+        },
+      ),
     );
   }
 
@@ -101,6 +117,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                     textPageControler.previousPage(
                         duration: const Duration(milliseconds: 600),
                         curve: Curves.linear);
+                    imagePageControler.previousPage(
+                        duration: const Duration(milliseconds: 600),
+                        curve: Curves.linear);
                   }
                 },
                 child: Text(
@@ -114,13 +133,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                 if (pageIndexController.pageIndex.value ==
                     OnboadingModel.listOfOnboarding.length - 1) {
                   // Get.to(const StartScreen());
-                  Get.toNamed('/start');
+                  // Get.toNamed('/start');
+                  HelperFunctions.navigateToScreen(
+                      context: context, screen: const StartScreen());
                 }
                 // carouselTextController.nextPage();
                 // carouselImageController.nextPage();
                 //
 
                 textPageControler.nextPage(
+                    duration: const Duration(milliseconds: 800),
+                    curve: Curves.linear);
+                imagePageControler.nextPage(
                     duration: const Duration(milliseconds: 800),
                     curve: Curves.linear);
                 // carouselImageController.jumpToPage()
@@ -178,9 +202,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
       child: TopLeftBtn(
         isText: true,
         onPressed: () {
-          // HelperFunctions.navigateToScreen(
-          //     context: context, screen: const StartScreen());
-          Get.toNamed('/start');
+          HelperFunctions.navigateToScreen(
+              context: context, screen: const StartScreen());
+          // Get.toNamed('/start');
         },
       ),
     );

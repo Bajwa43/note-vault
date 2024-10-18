@@ -70,7 +70,8 @@ class StartScreen extends StatelessWidget {
           onPressed: () {
             // HelperFunctions.navigateToScreen(
             //     context: context, screen: RegisterScreen());
-            Get.toNamed('/register');
+            // Get.toNamed('/register');
+            Get.to(const RegisterScreen());
           },
           widthOfBtn: 327.sp,
           flatBtn: true),
@@ -86,7 +87,8 @@ class StartScreen extends StatelessWidget {
             onPressed: () {
               // HelperFunctions.navigateToScreen(
               //     context: context, screen: LoginScreen());
-              Get.toNamed('/login');
+              // Get.toNamed('/login');
+              Get.to(const LoginScreen());
             },
             widthOfBtn: 327.sp));
   }

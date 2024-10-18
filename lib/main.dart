@@ -16,6 +16,7 @@ import 'package:todo_app/modules/home_module/controller/task_controller.dart';
 import 'package:todo_app/modules/home_module/home_screen.dart';
 import 'package:todo_app/modules/category_add_module/Caetgory_screen.dart';
 import 'package:todo_app/modules/onboading_module/onboarding_screen.dart';
+import 'package:todo_app/modules/splash_screen.dart';
 import 'package:todo_app/modules/start_screen.dart';
 import 'package:todo_app/data/Constants/colors.dart';
 import 'package:workmanager/workmanager.dart';
@@ -66,14 +67,14 @@ class MyApp extends StatelessWidget {
     () => ProfileController(),
   );
 
-  // final ProfileController _pc = Get.put(ProfileController());
+  final ProfileController pc = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-        designSize: Size(360, 640),
+        designSize: const Size(360, 640),
         builder: (context, child) {
           return GetMaterialApp(
-            home: const AuthWrapper(),
+            home: AuthWrapper(),
             title: 'Flutter Demo',
 
             theme: ThemeData(
